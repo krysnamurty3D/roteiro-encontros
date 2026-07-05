@@ -311,6 +311,7 @@ main{padding-top:6px;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </head>
 <body>
 <div id="app"></div>
@@ -384,16 +385,27 @@ function firebaseIsConfigured(){
   return firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf('COLE_AQUI') === -1;
 }
 function initFirebase(){
-  try{
-    if(!firebaseIsConfigured() || typeof firebase === 'undefined') return false;
-    var app = firebase.initializeApp(firebaseConfig);
-    fbDb = firebase.database();
-    FIREBASE_READY = true;
-    return true;
-  }catch(e){
-    FIREBASE_READY = false;
-    return false;
-  }
+  return new Promise(function(resolve){
+    try{
+      if(!firebaseIsConfigured() || typeof firebase === 'undefined'){ resolve(false); return; }
+      firebase.initializeApp(firebaseConfig);
+      fbDb = firebase.database();
+      // Faz um login anônimo e silencioso — a pessoa não vê nada disso,
+      // mas é o que permite deixar as regras do Firebase mais seguras
+      // (exigindo "estar logado" pra ler/gravar) sem pedir senha do Google
+      // nem nada complicado pra ninguém.
+      firebase.auth().signInAnonymously().then(function(){
+        FIREBASE_READY = true;
+        resolve(true);
+      }).catch(function(){
+        FIREBASE_READY = false;
+        resolve(false);
+      });
+    }catch(e){
+      FIREBASE_READY = false;
+      resolve(false);
+    }
+  });
 }
 function dbGetOnce(path){
   if(!FIREBASE_READY) return Promise.resolve(null);
@@ -1092,6 +1104,7 @@ function renderRolePicker(){
     '<div class="role-picker">'+
       '<div class="role-flame">🕯️</div>'+
       '<h1>Roteiro ECC</h1>'+
+      '<p style="margin-bottom:6px;">Acompanhamento ao vivo do roteiro do encontro — todos os aparelhos veem o mesmo andamento em tempo real.</p>'+
       '<p>Como você vai usar o app?</p>'+
       '<button class="role-btn role-btn-editor" id="roleEditorBtn">'+
         '<div class="role-btn-title">Sou o roteirista</div>'+
@@ -1148,7 +1161,8 @@ function renderSetupScreen(msg){
 
 async function init(){
   if(!firebaseIsConfigured()){ renderSetupScreen(); return; }
-  if(!initFirebase()){ renderSetupScreen('Não consegui conectar ao Firebase. Confira se os valores colados estão certos e se você tem internet.'); return; }
+  var ok = await initFirebase();
+  if(!ok){ renderSetupScreen('Não consegui conectar ao Firebase. Confira se os valores colados estão certos, se você tem internet, e se ativou o "Anonymous" em Authentication ▸ Sign-in method no Firebase Console.'); return; }
   await loadRole();
   if(!myRole){ renderRolePicker(); return; }
   startApp();
@@ -1160,6 +1174,31 @@ async function startApp(){
   var churchEl = document.getElementById('churchNameEl');
   if(CHURCH_NAME){ churchEl.textContent = CHURCH_NAME; churchEl.style.display=''; }
   else { churchEl.style.display='none'; }
+
+  // Se um teste antigo ficou "ao vivo" sem ninguém reiniciar, a conta de
+  // atraso/adiantamento fica toda errada, porque mistura o dia de hoje com
+  // o horário real de um dia diferente. Aqui a gente detecta isso (etapa
+  // "iniciada" há mais de 18 horas, o que nenhum dia real do encontro deveria
+  // levar) e limpa sozinho, pra nunca mais aparecer essa tela confusa.
+  function autoHealStaleProgress(eds){
+    var changed = false;
+    var STALE_MS = 18*60*60*1000;
+    (eds||[]).forEach(function(ed){
+      (ed.days||[]).forEach(function(day){
+        if(day.live && day.live.activeEventId){
+          var ev = day.events.find(function(e){ return e.id===day.live.activeEventId; });
+          if(ev && ev.actualStartMs!=null && (Date.now()-ev.actualStartMs) > STALE_MS){
+            day.events.forEach(function(e){ e.done=false; e.actualStartMs=null; e.skipped=false; });
+            day.live.activeEventId = null;
+            day.live.startedAt = null;
+            day.live.finished = false;
+            changed = true;
+          }
+        }
+      });
+    });
+    return changed;
+  }
 
   // Escuta o roteiro em tempo real: qualquer mudança feita em QUALQUER aparelho
   // chega aqui na hora, sem precisar ficar checando de tempos em tempos.
@@ -1181,6 +1220,7 @@ async function startApp(){
           lastSavedJSON = JSON.stringify(editions);
           dbSet(STORE_KEY, lastSavedJSON);
         }
+        if(autoHealStaleProgress(editions) && myRole==='editor'){ persist(); }
         nav.editionId = editions[0] && editions[0].id;
         nav.dayId = editions[0] && editions[0].days[0] && editions[0].days[0].id;
         resolve();
@@ -1194,6 +1234,7 @@ async function startApp(){
       if(json !== lastSavedJSON && json !== JSON.stringify(editions)){
         editions = loaded;
         lastSavedJSON = json;
+        if(autoHealStaleProgress(editions) && myRole==='editor'){ persist(); }
         if(!currentEdition()){ nav.editionId = editions[0] && editions[0].id; }
         if(!currentDay() && currentEdition()){ nav.dayId = currentEdition().days[0] && currentEdition().days[0].id; }
         render();
@@ -1229,7 +1270,7 @@ function renderSyncStatusRow(){
   if(!box) return;
   var offline = syncStatus.failCount >= 2;
   if(offline){
-    box.innerHTML = '<div class="status-pill" style="color:var(--danger); border-color:rgba(217,105,79,0.4);">📡 Sem conexão</div>';
+    box.innerHTML = '<div class="status-pill" style="color:var(--danger); border-color:rgba(217,105,79,0.4);" title="Suas ações continuam funcionando neste aparelho e vão sincronizar sozinhas assim que a internet voltar">📡 Sem conexão — sincronizando quando voltar</div>';
     return;
   }
   if(!syncStatus.lastOkAt){
@@ -1579,7 +1620,7 @@ function renderLiveCoordenador(){
   var schedule = computeLiveSchedule(day);
   var html = '';
 
-  html += '<div class="sticky-status">'+renderStatusBanner(day, schedule)+'</div>';
+  html += renderStatusBanner(day, schedule);
 
   if(day.live.finished){
     html += '<div class="finished-box"><div style="font-size:28px;">🕯️</div><div class="big">Encontro concluído</div><div style="color:var(--text-muted); font-size:13px;">Todos os momentos deste dia foram registrados.</div></div>';
@@ -1785,7 +1826,10 @@ function renderEdit(){
   html += '<button class="small-btn" id="newEditionBtn">+ Nova edição</button>';
   html += '<button class="small-btn" id="printBtn">🖨️ PDF de backup</button>';
   html += '<button class="small-btn amber" id="importBtn">📥 Importar planilha</button>';
+  html += '<button class="small-btn" id="exportBackupBtn">💾 Baixar backup</button>';
+  html += '<button class="small-btn" id="importBackupBtn">📂 Restaurar backup</button>';
   html += '<input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none;"/>';
+  html += '<input type="file" id="importBackupFile" accept=".json" style="display:none;"/>';
   html += '</div>';
   html += '<div id="editionFormSlot"></div>';
 
@@ -1886,6 +1930,63 @@ function bindEdit(){
         }
       };
       reader.readAsArrayBuffer(file);
+    });
+  }
+
+  var exportBackupBtn = document.getElementById('exportBackupBtn');
+  if(exportBackupBtn) exportBackupBtn.addEventListener('click', function(){
+    var json = JSON.stringify(editions, null, 2);
+    var blob = new Blob([json], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    var stamp = new Date().toISOString().slice(0,16).replace(/[:T]/g,'-');
+    a.download = 'roteiro-ecc-backup-'+stamp+'.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+
+  var importBackupBtn = document.getElementById('importBackupBtn');
+  var importBackupFile = document.getElementById('importBackupFile');
+  if(importBackupBtn && importBackupFile){
+    importBackupBtn.addEventListener('click', function(){ importBackupFile.click(); });
+    importBackupFile.addEventListener('change', function(e){
+      var file = e.target.files[0];
+      if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(evt){
+        importBackupFile.value = '';
+        var parsed;
+        try{ parsed = JSON.parse(evt.target.result); }catch(err){
+          document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Esse arquivo não parece um backup válido (não consegui ler como JSON).</div>';
+          return;
+        }
+        if(!Array.isArray(parsed) || !parsed.length){
+          document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Esse arquivo não parece um backup válido do Roteiro ECC.</div>';
+          return;
+        }
+        document.getElementById('editionFormSlot').innerHTML =
+          '<div class="import-error" style="border-color:rgba(217,105,79,0.5); color:var(--text);">'+
+          'Isso vai <b>substituir todos os dados atuais</b> (todas as edições e dias) pelo conteúdo desse backup. Essa ação não pode ser desfeita.'+
+          '<div class="btnrow" style="margin:10px 0 0;">'+
+            '<button class="btn btn-danger" id="confirmRestoreBtn">Sim, restaurar</button>'+
+            '<button class="btn btn-ghost" id="cancelRestoreBtn">Cancelar</button>'+
+          '</div></div>';
+        document.getElementById('confirmRestoreBtn').addEventListener('click', function(){
+          mutate(function(){
+            editions = parsed;
+            nav.editionId = editions[0] && editions[0].id;
+            nav.dayId = editions[0] && editions[0].days[0] && editions[0].days[0].id;
+          });
+          document.getElementById('editionFormSlot').innerHTML = '';
+        });
+        document.getElementById('cancelRestoreBtn').addEventListener('click', function(){
+          document.getElementById('editionFormSlot').innerHTML = '';
+        });
+      };
+      reader.readAsText(file);
     });
   }
 
@@ -2033,15 +2134,9 @@ function renderMain(){
   if(nav.tab==='live'){
     main.innerHTML = renderLive();
     bindLive();
-    if(myRole==='coordenador') adjustStickyOffset();
   }
   else if(nav.tab==='program'){ main.innerHTML = renderProgram(); bindProgram(); }
   else { main.innerHTML = renderEdit(); bindEdit(); }
-}
-function adjustStickyOffset(){
-  var topbar = document.querySelector('.topbar');
-  var sticky = document.querySelector('.sticky-status');
-  if(topbar && sticky){ sticky.style.top = topbar.offsetHeight+'px'; }
 }
 
 function render(){
