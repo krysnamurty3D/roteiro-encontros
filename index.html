@@ -240,6 +240,7 @@ main{padding-top:6px;}
 .section-title{display:flex; justify-content:space-between; align-items:center; margin:18px 4px 10px;}
 .section-title h2{font-family:'Fraunces', serif; font-size:16px; margin:0;}
 .small-btn{background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:12px; font-weight:700; padding:8px 12px; border-radius:100px; cursor:pointer;}
+.small-btn.danger{background:rgba(217,105,79,0.14); border-color:rgba(217,105,79,0.4); color:var(--danger);}
 .small-btn.amber{background:rgba(232,163,61,0.14); border-color:rgba(232,163,61,0.4); color:var(--amber-glow);}
 .day-edit-row{display:flex; align-items:center; gap:8px; padding:10px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; cursor:pointer;}
 .day-edit-row.selected{border-color:var(--amber); background:rgba(232,163,61,0.08);}
@@ -309,6 +310,7 @@ main{padding-top:6px;}
 .import-error{margin:10px 4px; padding:12px 14px; background:rgba(217,105,79,0.1); border:1px solid rgba(217,105,79,0.35); border-radius:12px; font-size:12.5px; color:var(--text-muted); line-height:1.5;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.11.0/mammoth.browser.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -795,6 +797,26 @@ function parseWorkbookToDays(wb){
   return allDays;
 }
 
+// Importação do Word: converte o .docx pra HTML (com a biblioteca Mammoth),
+// pega cada tabela encontrada no documento, e reaproveita o MESMO entendedor
+// de linhas usado pra planilha — já que, no fim, é a mesma ideia (linhas com
+// HORA, TEMPO, LOCAL, EVENTO).
+function parseWordToDays(html){
+  var container = document.createElement('div');
+  container.innerHTML = html;
+  var tables = container.querySelectorAll('table');
+  var allDays = [];
+  tables.forEach(function(table){
+    var rows = [];
+    table.querySelectorAll('tr').forEach(function(tr){
+      var cells = Array.from(tr.querySelectorAll('td,th')).map(function(td){ return td.textContent.trim(); });
+      rows.push(cells);
+    });
+    allDays = allDays.concat(parseSheetToDays(rows));
+  });
+  return allDays;
+}
+
 function seedData(){
   function mkDay(label, items){
     var events = items.map(function(it,i){
@@ -965,8 +987,8 @@ function seedData(){
   ]);
 
   return [
-    {id: uid('ed'), name:'Encontro de Casais — 2025', days:[d2025_1, d2025_2, d2025_3]},
-    {id: uid('ed'), name:'Encontro de Casais — 2023', days:[d2023_1, d2023_2, d2023_3]},
+    {id: uid('ed'), name:'Encontro de Casais — 2025', church:'', days:[d2025_1, d2025_2, d2025_3]},
+    {id: uid('ed'), name:'Encontro de Casais — 2023', church:'', days:[d2023_1, d2023_2, d2023_3]},
   ];
 }
 
@@ -980,7 +1002,16 @@ var editions = [];
 // Trava leve de controle: evita que dois aparelhos avancem o Ao Vivo ao mesmo
 // tempo sem perceber. Não impede nada de força bruta — é um aviso + as ações
 // ficam ocultas nesse aparelho enquanto outro estiver "segurando" o controle.
-var mySessionId = uid('sess');
+// A identidade do aparelho fica guardada no navegador (não muda a cada recarregada
+// de página) — assim, dar um F5 não faz o aparelho "travar contra si mesmo".
+function getMySessionId(){
+  var existing = localGet('ecc-session-id');
+  if(existing) return existing;
+  var fresh = uid('sess');
+  localSet('ecc-session-id', fresh);
+  return fresh;
+}
+var mySessionId = getMySessionId();
 var controllerInfo = { sessionId: null, lastSeen: 0 };
 var CONTROLLER_KEY = 'roteiro/controller';
 var CONTROLLER_TIMEOUT_MS = 12000;
@@ -1040,7 +1071,7 @@ async function claimControllerIfFree(force){
     // (com uma pausa aleatória) e confere de novo. Isso evita que dois aparelhos
     // que abriram a aba Ao Vivo no mesmíssimo segundo achem, os dois, que estão
     // no controle.
-    controllerInfo = { sessionId: mySessionId, lastSeen: Date.now() };
+    controllerInfo = { sessionId: mySessionId, lastSeen: Date.now(), name: currentUser && currentUser.name || null };
     dbSet(CONTROLLER_KEY, JSON.stringify(controllerInfo));
     if(!force){
       await new Promise(function(r){ setTimeout(r, 300 + Math.random()*400); });
@@ -1061,16 +1092,22 @@ var STORE_KEY = 'roteiro/data';
 var saveTimer = null;
 var lastSavedJSON = '';
 var syncStatus = { lastOkAt: null, failCount: 0 };
+var activeEditionId = null; // qual roteiro é "o de hoje" — compartilhado, os coordenadores seguem isso sozinhos
 function persist(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(function(){
-    var json = JSON.stringify(editions);
+    var json = JSON.stringify({editions: editions, activeEditionId: activeEditionId});
     lastSavedJSON = json;
     dbSet(STORE_KEY, json).then(function(){
       syncStatus.lastOkAt = Date.now();
       syncStatus.failCount = 0;
     });
   }, 150);
+}
+function setActiveEdition(id){
+  if(myRole!=='editor') return;
+  activeEditionId = id;
+  persist();
 }
 
 function currentEdition(){ return editions.find(function(e){return e.id===nav.editionId;}) || editions[0]; }
@@ -1087,6 +1124,13 @@ function navigate(fn){ fn(); render(); }
 // guarda sua própria escolha, sem afetar o que os outros veem.
 var myRole = null;
 var ROLE_KEY = 'ecc-role-pref';
+var currentUser = null; // {uid, name, email} depois do login com Google (só roteirista)
+// Troque pelo SEU e-mail do Google. Quem entrar com esse e-mail vira "super
+// administrador": pode fazer tudo que um roteirista faz, e também coisas que
+// os outros roteiristas não podem (excluir roteiro de vez, restaurar backup
+// que apaga tudo). Dá pra colocar mais de um e-mail, separado por vírgula.
+var SUPER_ADMIN_EMAILS = ['krysnamurty@gmail.com'];
+var isSuperAdmin = false;
 async function loadRole(){
   var val = localGet(ROLE_KEY);
   if(val) myRole = val;
@@ -1095,9 +1139,6 @@ function saveRole(role){
   myRole = role;
   localSet(ROLE_KEY, role);
 }
-var EDITOR_PASSWORD = 'roteiro2025'; // troque esse texto se quiser outra senha
-var EVENT_TITLE = 'Roteiro ECC'; // troque esse texto pro nome do seu evento
-var CHURCH_NAME = ''; // troque esse texto pelo nome da sua igreja (ou deixe em branco)
 function renderRolePicker(){
   var app = document.getElementById('app');
   app.innerHTML =
@@ -1107,7 +1148,7 @@ function renderRolePicker(){
       '<p style="margin-bottom:6px;">Acompanhamento ao vivo do roteiro do encontro — todos os aparelhos veem o mesmo andamento em tempo real.</p>'+
       '<p>Como você vai usar o app?</p>'+
       '<button class="role-btn role-btn-editor" id="roleEditorBtn">'+
-        '<div class="role-btn-title">Sou o roteirista</div>'+
+        '<div class="role-btn-title">🔑 Sou o roteirista</div>'+
       '</button>'+
       '<button class="role-btn role-btn-coord" id="roleCoordBtn">'+
         '<div class="role-btn-title">Sou coordenador</div>'+
@@ -1118,19 +1159,30 @@ function renderRolePicker(){
     var extra = document.getElementById('rolePickerExtra');
     extra.innerHTML =
       '<div class="role-pw-box">'+
-        '<div class="role-pw-label">Senha do roteirista</div>'+
-        '<input type="password" id="rolePwInput" placeholder="Digite a senha"/>'+
-        '<div class="role-pw-err" id="rolePwErr" style="display:none;">Senha incorreta.</div>'+
-        '<button class="btn btn-primary" id="rolePwConfirm" style="margin-top:10px;">Entrar</button>'+
+        '<div class="role-pw-label">Entre com sua conta Google pra continuar como roteirista.</div>'+
+        '<button class="btn btn-primary" id="googleLoginBtn" style="margin-top:10px; width:100%;">🔵 Entrar com Google</button>'+
+        '<div class="role-pw-err" id="googleLoginErr" style="display:none;"></div>'+
       '</div>';
-    document.getElementById('rolePwInput').focus();
-    function tryEnter(){
-      var val = document.getElementById('rolePwInput').value;
-      if(val === EDITOR_PASSWORD){ saveRole('editor'); startApp(); }
-      else { document.getElementById('rolePwErr').style.display = 'block'; }
-    }
-    document.getElementById('rolePwConfirm').addEventListener('click', tryEnter);
-    document.getElementById('rolePwInput').addEventListener('keydown', function(e){ if(e.key==='Enter') tryEnter(); });
+    document.getElementById('googleLoginBtn').addEventListener('click', function(){
+      var errBox = document.getElementById('googleLoginErr');
+      errBox.style.display = 'none';
+      try{
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result){
+          currentUser = { uid: result.user.uid, name: result.user.displayName || result.user.email, email: result.user.email };
+          mySessionId = currentUser.uid;
+          isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((currentUser.email||'').toLowerCase()) !== -1;
+          saveRole('editor');
+          startApp();
+        }).catch(function(err){
+          errBox.textContent = 'Não consegui entrar: ' + (err && err.message ? err.message : 'tenta de novo.');
+          errBox.style.display = 'block';
+        });
+      }catch(err){
+        errBox.textContent = 'Não consegui abrir o login do Google. Confira se ativou o provedor "Google" em Authentication ▸ Sign-in method no Firebase Console.';
+        errBox.style.display = 'block';
+      }
+    });
   });
   document.getElementById('roleCoordBtn').addEventListener('click', function(){ saveRole('coordenador'); startApp(); });
 }
@@ -1140,6 +1192,9 @@ function switchRole(){
   activeIntervals = [];
   detachAllListeners();
   myRole = null;
+  currentUser = null;
+  isSuperAdmin = false;
+  mySessionId = getMySessionId();
   switchRoleConfirmOpen = false;
   renderRolePicker();
 }
@@ -1163,17 +1218,24 @@ async function init(){
   if(!firebaseIsConfigured()){ renderSetupScreen(); return; }
   var ok = await initFirebase();
   if(!ok){ renderSetupScreen('Não consegui conectar ao Firebase. Confira se os valores colados estão certos, se você tem internet, e se ativou o "Anonymous" em Authentication ▸ Sign-in method no Firebase Console.'); return; }
+
+  // Se já tinha feito login com o Google antes, o Firebase lembra sozinho
+  // entre recarregamentos de página — assim não precisa clicar de novo toda hora.
+  var fbUser = firebase.auth().currentUser;
+  if(fbUser && !fbUser.isAnonymous){
+    currentUser = { uid: fbUser.uid, name: fbUser.displayName || fbUser.email, email: fbUser.email };
+    mySessionId = currentUser.uid;
+    isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((currentUser.email||'').toLowerCase()) !== -1;
+  }
+
   await loadRole();
   if(!myRole){ renderRolePicker(); return; }
+  if(myRole==='editor' && !currentUser){ renderRolePicker(); return; }
   startApp();
 }
 
 async function startApp(){
   document.getElementById('app').innerHTML = document.getElementById('appShellTemplate').innerHTML;
-  document.getElementById('eventTitleEl').textContent = EVENT_TITLE;
-  var churchEl = document.getElementById('churchNameEl');
-  if(CHURCH_NAME){ churchEl.textContent = CHURCH_NAME; churchEl.style.display=''; }
-  else { churchEl.style.display='none'; }
 
   // Se um teste antigo ficou "ao vivo" sem ninguém reiniciar, a conta de
   // atraso/adiantamento fica toda errada, porque mistura o dia de hoje com
@@ -1202,6 +1264,10 @@ async function startApp(){
 
   // Escuta o roteiro em tempo real: qualquer mudança feita em QUALQUER aparelho
   // chega aqui na hora, sem precisar ficar checando de tempos em tempos.
+  function unwrapPayload(loaded){
+    if(Array.isArray(loaded)) return { editions: loaded, activeEditionId: null }; // formato antigo (migração automática)
+    return { editions: (loaded && loaded.editions) || [], activeEditionId: (loaded && loaded.activeEditionId) || null };
+  }
   await new Promise(function(resolve){
     var firstLoad = true;
     dbListen(STORE_KEY, function(raw){
@@ -1212,17 +1278,22 @@ async function startApp(){
 
       if(firstLoad){
         firstLoad = false;
-        if(loaded && loaded.length){
-          editions = loaded;
-          lastSavedJSON = JSON.stringify(editions);
-        } else {
-          editions = seedData();
-          lastSavedJSON = JSON.stringify(editions);
-          dbSet(STORE_KEY, lastSavedJSON);
+        var wasEmpty = !loaded;
+        if(loaded){
+          var unwrapped = unwrapPayload(loaded);
+          editions = unwrapped.editions;
+          activeEditionId = unwrapped.activeEditionId;
         }
+        if(!editions.length){
+          editions = seedData();
+          activeEditionId = editions[0].id;
+          wasEmpty = true;
+        }
+        lastSavedJSON = JSON.stringify({editions: editions, activeEditionId: activeEditionId});
+        if(wasEmpty && myRole==='editor'){ dbSet(STORE_KEY, lastSavedJSON); }
         if(autoHealStaleProgress(editions) && myRole==='editor'){ persist(); }
-        nav.editionId = editions[0] && editions[0].id;
-        nav.dayId = editions[0] && editions[0].days[0] && editions[0].days[0].id;
+        nav.editionId = activeEditionId || (editions[0] && editions[0].id);
+        nav.dayId = currentEdition() && currentEdition().days[0] && currentEdition().days[0].id;
         resolve();
         return;
       }
@@ -1231,11 +1302,14 @@ async function startApp(){
       var typing = document.activeElement && ['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName);
       if(typing) return;
       var json = JSON.stringify(loaded);
-      if(json !== lastSavedJSON && json !== JSON.stringify(editions)){
-        editions = loaded;
+      var currentJSON = JSON.stringify({editions: editions, activeEditionId: activeEditionId});
+      if(json !== lastSavedJSON && json !== currentJSON){
+        var unwrapped2 = unwrapPayload(loaded);
+        editions = unwrapped2.editions;
+        activeEditionId = unwrapped2.activeEditionId;
         lastSavedJSON = json;
         if(autoHealStaleProgress(editions) && myRole==='editor'){ persist(); }
-        if(!currentEdition()){ nav.editionId = editions[0] && editions[0].id; }
+        if(!currentEdition()){ nav.editionId = activeEditionId || (editions[0] && editions[0].id); }
         if(!currentDay() && currentEdition()){ nav.dayId = currentEdition().days[0] && currentEdition().days[0].id; }
         render();
       }
@@ -1306,7 +1380,9 @@ function bindTabBar(){
   }
 }
 function renderRoleBadgeContent(roleBadge, isEditor){
-  roleBadge.innerHTML = isEditor ? 'ROTEIRISTA' : 'COORDENADOR';
+  var label = isEditor ? (isSuperAdmin ? '👑 ADMIN' : 'ROTEIRISTA') : 'COORDENADOR';
+  if(isEditor && currentUser && currentUser.name){ label += ' · '+currentUser.name.split(' ')[0].toUpperCase(); }
+  roleBadge.innerHTML = label;
   roleBadge.style.background = isEditor ? 'rgba(232,163,61,0.14)' : 'var(--surface-2)';
   roleBadge.style.color = isEditor ? 'var(--amber-glow)' : 'var(--text-muted)';
 }
@@ -1350,6 +1426,14 @@ function bindThemeToggle(){
 
 /* ---------- top selectors ---------- */
 function renderHeader(){
+  // No Ao Vivo, todo mundo segue automaticamente o roteiro marcado como "ativo"
+  // (quando existe um definido) — só em Programação/Editar é que dá pra navegar
+  // livremente por outros roteiros sem afetar o que os outros veem.
+  if(nav.tab==='live' && activeEditionId && editions.some(function(e){return e.id===activeEditionId;}) && nav.editionId!==activeEditionId){
+    nav.editionId = activeEditionId;
+    nav.dayId = currentEdition() && currentEdition().days[0] && currentEdition().days[0].id;
+  }
+
   var selectorsBox = document.querySelector('.selectors');
   var pillsBox = document.getElementById('dayPills');
   var showSelectors = nav.tab==='program' || nav.tab==='edit';
@@ -1359,13 +1443,15 @@ function renderHeader(){
 
   var sel = document.getElementById('editionSelect');
   sel.innerHTML = editions.map(function(ed){
-    return '<option value="'+ed.id+'"'+(ed.id===nav.editionId?' selected':'')+'>'+esc(ed.name)+'</option>';
+    var star = ed.id===activeEditionId ? '★ ' : '';
+    return '<option value="'+ed.id+'"'+(ed.id===nav.editionId?' selected':'')+'>'+star+esc(ed.name)+'</option>';
   }).join('');
   sel.onchange = function(){
     navigate(function(){
       nav.editionId = sel.value;
       nav.dayId = currentEdition().days[0] ? currentEdition().days[0].id : null;
     });
+    if(myRole==='editor'){ setActiveEdition(sel.value); }
   };
 
   var pills = document.getElementById('dayPills');
@@ -1387,6 +1473,14 @@ function renderHeader(){
   if(clockRow){
     if(myRole==='editor'){ clockRow.style.display=''; renderClockSim(); }
     else { clockRow.style.display='none'; clockRow.innerHTML=''; }
+  }
+
+  var titleEl = document.getElementById('eventTitleEl');
+  var churchEl = document.getElementById('churchNameEl');
+  if(titleEl){
+    titleEl.textContent = (ed && ed.name) ? ed.name : 'Roteiro ECC';
+    if(ed && ed.church){ churchEl.textContent = ed.church; churchEl.style.display=''; }
+    else { churchEl.style.display='none'; }
   }
 }
 
@@ -1522,7 +1616,8 @@ function renderLiveEditor(){
   html += renderStatusBanner(day, schedule);
 
   if(locked){
-    html += '<div class="lock-banner">🔒 Outro aparelho está controlando o Ao Vivo agora. Você pode acompanhar, mas os botões de ação ficam escondidos aqui pra evitar os dois mexerem ao mesmo tempo.'+
+    var lockedByName = controllerInfo.name ? '<b>'+esc(controllerInfo.name)+'</b>' : 'Outro aparelho';
+    html += '<div class="lock-banner">🔒 '+lockedByName+' está controlando o Ao Vivo agora. Você pode acompanhar, mas os botões de ação ficam escondidos aqui pra evitar os dois mexerem ao mesmo tempo.'+
       '<button class="lock-takeover" id="takeoverBtn">Assumir controle mesmo assim</button></div>';
   }
 
@@ -1768,12 +1863,14 @@ function bindLive(){
       day.live.finished = false;
     });
   });
-  document.querySelectorAll('.mini-item').forEach(function(el){
-    el.addEventListener('click', function(){
-      var i = +el.getAttribute('data-idx');
-      mutate(function(){ jumpTo(day, schedule, i); });
+  if(myRole==='editor'){
+    document.querySelectorAll('.mini-item[data-idx]').forEach(function(el){
+      el.addEventListener('click', function(){
+        var i = +el.getAttribute('data-idx');
+        mutate(function(){ jumpTo(day, schedule, i); });
+      });
     });
-  });
+  }
 }
 
 /* ---------- PROGRAM TAB ---------- */
@@ -1822,15 +1919,24 @@ function renderEdit(){
   var html = '';
 
   html += '<div class="edition-actions">';
-  html += '<button class="small-btn amber" id="dupEditionBtn">⎘ Duplicar edição</button>';
-  html += '<button class="small-btn" id="newEditionBtn">+ Nova edição</button>';
+  html += '<button class="small-btn amber" id="dupEditionBtn">⎘ Duplicar roteiro</button>';
+  html += '<button class="small-btn" id="newEditionBtn">+ Novo roteiro</button>';
+  html += '<button class="small-btn" id="renameEditionBtn">✏️ Nome/igreja</button>';
   html += '<button class="small-btn" id="printBtn">🖨️ PDF de backup</button>';
   html += '<button class="small-btn amber" id="importBtn">📥 Importar planilha</button>';
+  html += '<button class="small-btn amber" id="importWordBtn">📄 Importar do Word</button>';
   html += '<button class="small-btn" id="exportBackupBtn">💾 Baixar backup</button>';
-  html += '<button class="small-btn" id="importBackupBtn">📂 Restaurar backup</button>';
+  if(isSuperAdmin){
+    html += '<button class="small-btn" id="importBackupBtn">📂 Restaurar backup</button>';
+    html += '<button class="small-btn danger" id="deleteEditionBtn">🗑️ Excluir roteiro</button>';
+  }
   html += '<input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none;"/>';
+  html += '<input type="file" id="importWordFile" accept=".docx" style="display:none;"/>';
   html += '<input type="file" id="importBackupFile" accept=".json" style="display:none;"/>';
   html += '</div>';
+  if(!isSuperAdmin){
+    html += '<p class="hint" style="margin:2px 4px 0;">Algumas ações (restaurar backup, excluir roteiro) ficam disponíveis só pro administrador do sistema.</p>';
+  }
   html += '<div id="editionFormSlot"></div>';
 
   html += '<div class="section-title"><h2>Dias</h2><button class="small-btn" id="addDayBtn">+ Adicionar dia</button></div>';
@@ -1889,6 +1995,27 @@ function showInlineForm(slotId, placeholder, onConfirm){
   document.getElementById('inlineCancel').addEventListener('click', function(){ slot.innerHTML=''; });
 }
 
+function showRoteiroForm(slotId, defaults, onConfirm){
+  var slot = document.getElementById(slotId);
+  slot.innerHTML =
+    '<div class="inline-form" style="flex-direction:column; align-items:stretch;">'+
+      '<input type="text" id="roteiroNameInput" placeholder="Nome do evento (ex: Encontro de Casais — 2026)" value="'+esc(defaults.name||'')+'"/>'+
+      '<input type="text" id="roteiroChurchInput" placeholder="Nome da igreja (opcional)" value="'+esc(defaults.church||'')+'" style="margin-top:8px;"/>'+
+      '<div style="display:flex; gap:8px; margin-top:10px;">'+
+        '<button class="small-btn amber" id="roteiroFormConfirm">OK</button>'+
+        '<button class="small-btn" id="roteiroFormCancel">Cancelar</button>'+
+      '</div>'+
+    '</div>';
+  document.getElementById('roteiroNameInput').focus();
+  document.getElementById('roteiroFormConfirm').addEventListener('click', function(){
+    var name = document.getElementById('roteiroNameInput').value.trim();
+    var church = document.getElementById('roteiroChurchInput').value.trim();
+    if(name) onConfirm(name, church);
+    slot.innerHTML = '';
+  });
+  document.getElementById('roteiroFormCancel').addEventListener('click', function(){ slot.innerHTML=''; });
+}
+
 function bindEdit(){
   var ed = currentEdition();
   var day = currentDay();
@@ -1919,15 +2046,53 @@ function bindEdit(){
           }
           showInlineForm('editionFormSlot', 'Nome da edição importada (ex: Encontro — 2027)', function(name){
             mutate(function(){
-              var newEd = { id: uid('ed'), name: name, days: days };
+              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days };
               editions.push(newEd);
               nav.editionId = newEd.id;
               nav.dayId = days[0].id;
+              activeEditionId = newEd.id;
             });
           });
         }catch(err){
           document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui ler esse arquivo. Confira se é um .xlsx, .xls ou .csv válido.</div>';
         }
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  var importWordBtn = document.getElementById('importWordBtn');
+  var importWordFile = document.getElementById('importWordFile');
+  if(importWordBtn && importWordFile){
+    importWordBtn.addEventListener('click', function(){ importWordFile.click(); });
+    importWordFile.addEventListener('change', function(e){
+      var file = e.target.files[0];
+      if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(evt){
+        importWordFile.value = '';
+        if(typeof mammoth === 'undefined'){
+          document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui carregar o leitor de Word. Confira sua internet e tente de novo.</div>';
+          return;
+        }
+        mammoth.convertToHtml({arrayBuffer: evt.target.result}).then(function(result){
+          var days = parseWordToDays(result.value);
+          if(!days.length){
+            document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui encontrar nenhuma tabela com o formato esperado (colunas Horário, Duração, Local, Momento) nesse documento do Word.</div>';
+            return;
+          }
+          showInlineForm('editionFormSlot', 'Nome da edição importada (ex: Encontro — 2027)', function(name){
+            mutate(function(){
+              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days };
+              editions.push(newEd);
+              nav.editionId = newEd.id;
+              nav.dayId = days[0].id;
+              activeEditionId = newEd.id;
+            });
+          });
+        }).catch(function(){
+          document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui ler esse arquivo. Confira se é um .docx válido.</div>';
+        });
       };
       reader.readAsArrayBuffer(file);
     });
@@ -1992,11 +2157,12 @@ function bindEdit(){
 
   var dup = document.getElementById('dupEditionBtn');
   if(dup) dup.addEventListener('click', function(){
-    showInlineForm('editionFormSlot', 'Nome da nova edição (ex: Encontro de Casais — 2026)', function(name){
+    showRoteiroForm('editionFormSlot', {name: ed.name+' (cópia)', church: ed.church||''}, function(name, church){
       mutate(function(){
         var clone = JSON.parse(JSON.stringify(ed));
         clone.id = uid('ed');
         clone.name = name;
+        clone.church = church;
         clone.days.forEach(function(d){
           d.id = uid('day');
           d.live = {activeEventId:null, startedAt:null, finished:false};
@@ -2005,21 +2171,60 @@ function bindEdit(){
         editions.push(clone);
         nav.editionId = clone.id;
         nav.dayId = clone.days[0] ? clone.days[0].id : null;
+        activeEditionId = clone.id;
       });
     });
   });
   var neu = document.getElementById('newEditionBtn');
   if(neu) neu.addEventListener('click', function(){
-    showInlineForm('editionFormSlot', 'Nome da nova edição', function(name){
+    showRoteiroForm('editionFormSlot', {name:'', church: ed && ed.church || ''}, function(name, church){
       mutate(function(){
         var day0 = {id: uid('day'), label:'Dia 1', live:{activeEventId:null,startedAt:null,finished:false}, events:[
           {id: uid('ev'), anchorTime:'08:00', durMin:30, local:'Pátio', title:'Recepção', done:false, actualStartMs:null, skipped:false, responsavel:'', notes:''}
         ]};
-        var newEd = {id: uid('ed'), name:name, days:[day0]};
+        var newEd = {id: uid('ed'), name:name, church:church, days:[day0]};
         editions.push(newEd);
         nav.editionId = newEd.id;
         nav.dayId = day0.id;
+        activeEditionId = newEd.id;
       });
+    });
+  });
+  var ren = document.getElementById('renameEditionBtn');
+  if(ren) ren.addEventListener('click', function(){
+    showRoteiroForm('editionFormSlot', {name: ed.name, church: ed.church||''}, function(name, church){
+      mutate(function(){
+        ed.name = name;
+        ed.church = church;
+      });
+    });
+  });
+  var delEd = document.getElementById('deleteEditionBtn');
+  if(delEd) delEd.addEventListener('click', function(){
+    if(!isSuperAdmin) return;
+    if(editions.length<=1){
+      document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não dá pra excluir o único roteiro que existe.</div>';
+      return;
+    }
+    document.getElementById('editionFormSlot').innerHTML =
+      '<div class="import-error" style="border-color:rgba(217,105,79,0.5); color:var(--text);">'+
+      'Isso vai <b>excluir de vez</b> o roteiro "'+esc(ed.name)+'" e todos os seus dias/eventos. Não pode ser desfeito.'+
+      '<div class="btnrow" style="margin:10px 0 0;">'+
+        '<button class="btn btn-danger" id="confirmDeleteEdBtn">Sim, excluir</button>'+
+        '<button class="btn btn-ghost" id="cancelDeleteEdBtn">Cancelar</button>'+
+      '</div></div>';
+    document.getElementById('confirmDeleteEdBtn').addEventListener('click', function(){
+      mutate(function(){
+        var wasActive = activeEditionId === ed.id;
+        editions = editions.filter(function(e){ return e.id !== ed.id; });
+        nav.editionId = editions[0].id;
+        nav.dayId = editions[0].days[0] && editions[0].days[0].id;
+        if(wasActive){ activeEditionId = editions[0].id; }
+      });
+      document.getElementById('editionFormSlot').innerHTML = '';
+    });
+    document.getElementById('cancelDeleteEdBtn').addEventListener('click', function(){
+      document.getElementById('editionFormSlot').innerHTML = '';
     });
   });
 
