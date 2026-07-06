@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Roteiro ECC — Editor</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
 :root{
   --bg:#14161c;
@@ -42,7 +42,7 @@ html,body{margin:0; padding:0; overflow-x:hidden; width:100%;}
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:'Manrope', sans-serif;
+  font-family:'Montserrat', sans-serif;
   min-height:100vh;
   padding-bottom:88px;
   max-width:100vw;
@@ -77,7 +77,7 @@ body{
 select.pick{
   flex:1; appearance:none; background:var(--surface); color:var(--text);
   border:1px solid var(--border); border-radius:var(--radius-sm);
-  padding:10px 32px 10px 14px; font-family:'Manrope'; font-size:13px; font-weight:600;
+  padding:10px 32px 10px 14px; font-family:'Montserrat'; font-size:13px; font-weight:600;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%239298a6' stroke-width='1.5' fill='none'/></svg>");
   background-repeat:no-repeat; background-position:right 12px center;
 }
@@ -102,7 +102,7 @@ select.pick{
 .clock-mini-btn{background:var(--surface-2); border:1px solid var(--border); color:var(--text); font-size:12px; width:24px; height:24px; border-radius:50%; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; padding:0;}
 .clock-panel{display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); padding:8px 10px; border-radius:12px; flex-wrap:wrap;}
 .clock-panel input[type=time]{background:var(--surface-2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:6px 8px; font-family:'JetBrains Mono'; font-size:13px;}
-.clock-speed-select{background:var(--surface-2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:6px 8px; font-family:'Manrope'; font-size:12.5px;}
+.clock-speed-select{background:var(--surface-2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:6px 8px; font-family:'Montserrat'; font-size:12.5px;}
 
 /* Tab bar */
 .tabbar{
@@ -115,7 +115,7 @@ select.pick{
 .tab-btn{
   flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
   background:none; border:none; color:var(--text-faint); padding:8px 4px; border-radius:12px;
-  font-family:'Manrope'; font-size:11px; font-weight:700; cursor:pointer;
+  font-family:'Montserrat'; font-size:11px; font-weight:700; cursor:pointer;
 }
 .tab-btn.active{color:var(--amber);}
 .tab-btn svg{width:22px; height:22px;}
@@ -176,7 +176,7 @@ main{padding-top:6px;}
 .next-strip .meta{font-size:12px; color:var(--text-muted); margin-top:1px;}
 .btnrow{display:flex; gap:10px; margin:14px 16px 4px;}
 .btn{
-  flex:1; border:none; border-radius:var(--radius-sm); padding:15px 16px; font-family:'Manrope'; font-weight:800;
+  flex:1; border:none; border-radius:var(--radius-sm); padding:15px 16px; font-family:'Montserrat'; font-weight:800;
   font-size:14.5px; cursor:pointer; text-align:center;
 }
 .btn-primary{background:var(--amber); color:#231705;}
@@ -246,9 +246,17 @@ main{padding-top:6px;}
 .small-btn{background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:12px; font-weight:700; padding:8px 12px; border-radius:100px; cursor:pointer;}
 .small-btn.danger{background:rgba(217,105,79,0.14); border-color:rgba(217,105,79,0.4); color:var(--danger);}
 .small-btn.amber{background:rgba(232,163,61,0.14); border-color:rgba(232,163,61,0.4); color:var(--amber-glow);}
+.edition-list{margin:0 0 16px;}
+.edition-card{display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; cursor:pointer;}
+.edition-card.current{border-color:var(--amber);}
+.edition-card-body{flex:1; min-width:0;}
+.edition-card-title{font-family:'Fraunces', serif; font-weight:600; font-size:15px; display:flex; align-items:center; gap:6px;}
+.edition-card-meta{font-size:11.5px; color:var(--text-muted); margin-top:3px; line-height:1.5;}
+.edition-star{color:var(--amber-glow); font-size:13px;}
+.edition-card-mark{background:none; border:none; color:var(--text-faint); font-size:11px; font-weight:700; text-decoration:underline; cursor:pointer; padding:4px; flex:0 0 auto; white-space:nowrap;}
 .day-edit-row{display:flex; align-items:center; gap:8px; padding:10px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; cursor:pointer;}
 .day-edit-row.selected{border-color:var(--amber); background:rgba(232,163,61,0.08);}
-.day-edit-row input{flex:1; background:transparent; border:none; color:var(--text); font-family:'Manrope'; font-weight:600; font-size:13.5px; padding:4px;}
+.day-edit-row input{flex:1; background:transparent; border:none; color:var(--text); font-family:'Montserrat'; font-weight:600; font-size:13.5px; padding:4px;}
 .iconbtn{background:none; border:none; color:var(--text-faint); cursor:pointer; padding:6px; display:flex;}
 .iconbtn:hover{color:var(--text);}
 .iconbtn svg{width:17px; height:17px;}
@@ -267,7 +275,7 @@ main{padding-top:6px;}
 .event-fields{display:grid; grid-template-columns:1fr; gap:8px;}
 .event-fields input[type=text]{
   width:100%; background:var(--surface-2); border:1px solid var(--border); color:var(--text);
-  border-radius:8px; padding:9px 10px; font-family:'Manrope'; font-size:13.5px;
+  border-radius:8px; padding:9px 10px; font-family:'Montserrat'; font-size:13.5px;
 }
 .event-fields input.title-input{font-family:'Fraunces', serif; font-size:14.5px; font-weight:600;}
 .row2{display:flex; gap:8px;}
@@ -443,6 +451,12 @@ function localSet(key, value){
 }
 
 function uid(p){return p+'-'+Math.random().toString(36).slice(2,9);}
+function creatorName(){ return (typeof currentUser!=='undefined' && currentUser && currentUser.name) || 'Roteirista'; }
+function fmtCreatedDate(ts){
+  if(!ts) return '';
+  var d = new Date(ts);
+  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+}
 
 // Relógio de TESTE — só existe neste aparelho, nunca é salvo ou compartilhado.
 // Serve pra você simular "estamos começando às 20h" mesmo testando de tarde,
@@ -1114,6 +1128,32 @@ function setActiveEdition(id){
   persist();
 }
 
+// ---------- histórico de ações (visível só pro super admin) ----------
+// Guarda um registro simples de "quem fez o quê e quando" — útil se um dia
+// tiver dúvida sobre o que aconteceu durante o encontro. Fica guardado à
+// parte dos dados do roteiro, então não interfere na sincronização deles.
+var ACTIVITY_LOG_KEY = 'roteiro/activityLog';
+var activityLog = [];
+var ACTIVITY_LOG_MAX = 150;
+function logActivity(action){
+  if(myRole!=='editor') return;
+  var actorName = (currentUser && currentUser.name) || 'Roteirista';
+  var entry = { ts: Date.now(), name: actorName, action: action };
+  activityLog = activityLog.concat([entry]);
+  if(activityLog.length > ACTIVITY_LOG_MAX) activityLog = activityLog.slice(activityLog.length - ACTIVITY_LOG_MAX);
+  dbGetOnce(ACTIVITY_LOG_KEY).then(function(raw){
+    var arr = [];
+    try{ arr = raw ? JSON.parse(raw) : []; }catch(e){ arr = []; }
+    arr.push(entry);
+    if(arr.length > ACTIVITY_LOG_MAX) arr = arr.slice(arr.length - ACTIVITY_LOG_MAX);
+    dbSet(ACTIVITY_LOG_KEY, JSON.stringify(arr));
+  });
+}
+function fmtLogTime(ts){
+  var d = new Date(ts);
+  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');
+}
+
 function currentEdition(){ return editions.find(function(e){return e.id===nav.editionId;}) || editions[0]; }
 function currentDay(){
   var ed = currentEdition(); if(!ed) return null;
@@ -1134,7 +1174,21 @@ var currentUser = null; // {uid, name, email} depois do login com Google (só ro
 // os outros roteiristas não podem (excluir roteiro de vez, restaurar backup
 // que apaga tudo). Dá pra colocar mais de um e-mail, separado por vírgula.
 var SUPER_ADMIN_EMAILS = ['TROQUE_PARA_SEU_EMAIL@gmail.com'];
+// Lista de convidados: só quem tiver o e-mail do Google cadastrado aqui
+// consegue entrar como roteirista. Adicione o e-mail de cada roteirista de
+// confiança, separado por vírgula, entre aspas simples. Qualquer outra conta
+// Google que tentar entrar como roteirista é recusada automaticamente.
+// (O(s) e-mail(s) da lista SUPER_ADMIN_EMAILS acima não precisam ser repetidos
+// aqui — administradores já têm acesso de roteirista automaticamente.)
+var AUTHORIZED_EDITOR_EMAILS = [
+  // 'exemplo@gmail.com',
+];
 var isSuperAdmin = false;
+function isEmailAuthorizedEditor(email){
+  var e = (email||'').toLowerCase();
+  var all = SUPER_ADMIN_EMAILS.concat(AUTHORIZED_EDITOR_EMAILS).map(function(x){return x.toLowerCase();});
+  return all.indexOf(e) !== -1;
+}
 async function loadRole(){
   var val = localGet(ROLE_KEY);
   if(val) myRole = val;
@@ -1173,6 +1227,13 @@ function renderRolePicker(){
       try{
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result){
+          var loggedEmail = result.user.email || '';
+          if(!isEmailAuthorizedEditor(loggedEmail)){
+            errBox.textContent = 'Este e-mail ('+loggedEmail+') não está autorizado a ser roteirista. Peça pro administrador do sistema adicionar seu e-mail na lista de convidados.';
+            errBox.style.display = 'block';
+            firebase.auth().signOut();
+            return;
+          }
           currentUser = { uid: result.user.uid, name: result.user.displayName || result.user.email, email: result.user.email };
           mySessionId = currentUser.uid;
           isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((currentUser.email||'').toLowerCase()) !== -1;
@@ -1227,6 +1288,14 @@ async function init(){
   // entre recarregamentos de página — assim não precisa clicar de novo toda hora.
   var fbUser = firebase.auth().currentUser;
   if(fbUser && !fbUser.isAnonymous){
+    if(!isEmailAuthorizedEditor(fbUser.email||'')){
+      // O e-mail foi removido da lista de convidados (ou nunca esteve nela) —
+      // desconecta e manda de volta pra escolha de papel.
+      try{ firebase.auth().signOut(); }catch(e){}
+      myRole = null;
+      renderRolePicker();
+      return;
+    }
     currentUser = { uid: fbUser.uid, name: fbUser.displayName || fbUser.email, email: fbUser.email };
     mySessionId = currentUser.uid;
     isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((currentUser.email||'').toLowerCase()) !== -1;
@@ -1341,6 +1410,41 @@ async function startApp(){
   }
 
   if(myRole==='editor') activeIntervals.push(setInterval(function(){ if(nav.tab==='live') claimControllerIfFree().then(renderMain); }, 5000));
+
+  // Histórico de ações: só o super administrador acompanha em tempo real.
+  if(isSuperAdmin){
+    dbListen(ACTIVITY_LOG_KEY, function(raw){
+      try{ activityLog = raw ? JSON.parse(raw) : []; }catch(e){ activityLog = []; }
+      if(nav.tab==='edit') renderMain();
+    });
+  }
+
+  // Backup automático: a cada 1 hora, se você é roteirista, guardamos uma
+  // cópia extra de segurança dos dados lá no Firebase (além do botão manual
+  // de baixar backup que já existe). Guardamos só as últimas 5 cópias, pra
+  // não acumular espaço à toa.
+  if(myRole==='editor'){
+    runAutoBackup();
+    activeIntervals.push(setInterval(runAutoBackup, 60*60*1000));
+  }
+}
+
+var AUTO_BACKUP_PREFIX = 'roteiro/autoBackups/';
+var AUTO_BACKUP_KEEP = 5;
+async function runAutoBackup(){
+  try{
+    var stamp = Date.now();
+    await dbSet(AUTO_BACKUP_PREFIX+stamp, JSON.stringify({editions: editions, activeEditionId: activeEditionId, savedAt: stamp}));
+    var idxRaw = await dbGetOnce(AUTO_BACKUP_PREFIX+'index');
+    var idx = [];
+    try{ idx = idxRaw ? JSON.parse(idxRaw) : []; }catch(e){ idx = []; }
+    idx.push(stamp);
+    while(idx.length > AUTO_BACKUP_KEEP){
+      var old = idx.shift();
+      dbSet(AUTO_BACKUP_PREFIX+old, null);
+    }
+    dbSet(AUTO_BACKUP_PREFIX+'index', JSON.stringify(idx));
+  }catch(e){}
 }
 
 function renderSyncStatusRow(){
@@ -1455,7 +1559,10 @@ function renderHeader(){
       nav.editionId = sel.value;
       nav.dayId = currentEdition().days[0] ? currentEdition().days[0].id : null;
     });
-    if(myRole==='editor'){ setActiveEdition(sel.value); }
+    if(myRole==='editor'){
+      setActiveEdition(sel.value);
+      logActivity('Definiu "'+(currentEdition()&&currentEdition().name)+'" como roteiro ativo do dia');
+    }
   };
 
   var pills = document.getElementById('dayPills');
@@ -1796,6 +1903,8 @@ function renderLiveCoordenador(){
   return html;
 }
 
+var editionListOpen = false;
+var activityLogOpen = false;
 var resetConfirmOpen = false;
 function renderResetControl(){
   if(!resetConfirmOpen){
@@ -1822,15 +1931,19 @@ function bindLive(){
   var startBtn = document.getElementById('startDayBtn');
   if(startBtn) startBtn.addEventListener('click', function(){
     mutate(function(){ startEvent(day, schedule, schedule[0]); });
+    logActivity('Começou o dia "'+day.label+'" ('+schedule[0].title+')');
   });
   var advBtn = document.getElementById('advanceBtn');
   if(advBtn) advBtn.addEventListener('click', function(){
+    var idx0 = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
+    var doneTitle = schedule[idx0].title, nextTitle = schedule[idx0+1] && schedule[idx0+1].title;
     mutate(function(){
       var idx = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
       var orig = day.events.find(function(x){return x.id===schedule[idx].id;});
       orig.done = true;
       startEvent(day, schedule, schedule[idx+1]);
     });
+    logActivity('Concluiu "'+doneTitle+'" e avançou para "'+nextTitle+'"');
   });
   var finBtn = document.getElementById('finishBtn');
   if(finBtn) finBtn.addEventListener('click', function(){
@@ -1842,6 +1955,7 @@ function bindLive(){
       day.live.startedAt = null;
       day.live.finished = true;
     });
+    logActivity('Concluiu o encontro do dia "'+day.label+'"');
   });
   var backBtn = document.getElementById('backBtn');
   if(backBtn) backBtn.addEventListener('click', function(){
@@ -1849,6 +1963,7 @@ function bindLive(){
       var idx = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
       jumpTo(day, schedule, Math.max(0, idx-1));
     });
+    logActivity('Voltou uma etapa no dia "'+day.label+'"');
   });
   var resetOpenBtn = document.getElementById('resetOpenBtn');
   if(resetOpenBtn) resetOpenBtn.addEventListener('click', function(){
@@ -1869,6 +1984,7 @@ function bindLive(){
       day.live.startedAt = null;
       day.live.finished = false;
     });
+    logActivity('Reiniciou o progresso do dia "'+day.label+'"');
   });
   if(myRole==='editor'){
     document.querySelectorAll('.mini-start-btn').forEach(function(btn){
@@ -1876,12 +1992,14 @@ function bindLive(){
         ev.stopPropagation();
         var i = +btn.getAttribute('data-startidx');
         mutate(function(){ jumpTo(day, schedule, i); });
+        logActivity('Pulou direto para "'+schedule[i].title+'" no dia "'+day.label+'"');
       });
     });
     document.querySelectorAll('.mini-item[data-idx]').forEach(function(el){
       el.addEventListener('click', function(){
         var i = +el.getAttribute('data-idx');
         mutate(function(){ jumpTo(day, schedule, i); });
+        logActivity('Pulou direto para "'+schedule[i].title+'" no dia "'+day.label+'"');
       });
     });
   }
@@ -1953,6 +2071,29 @@ function renderEdit(){
   }
   html += '<div id="editionFormSlot"></div>';
 
+  html += '<div class="section-title"><h2>Roteiros ('+editions.length+')</h2><button class="small-btn" id="toggleEditionListBtn">'+(editionListOpen?'Esconder ▲':'Ver todos ▼')+'</button></div>';
+  if(editionListOpen){
+    html += '<div class="edition-list">';
+    editions.forEach(function(e){
+      var isCurrent = e.id===nav.editionId;
+      var isActive = e.id===activeEditionId;
+      html += '<div class="edition-card'+(isCurrent?' current':'')+'" data-ed="'+e.id+'">';
+      html += '<div class="edition-card-body">';
+      html += '<div class="edition-card-title">'+(isActive?'<span class="edition-star">★</span>':'')+esc(e.name)+'</div>';
+      var metaBits = [];
+      if(e.church) metaBits.push(esc(e.church));
+      metaBits.push(e.days.length+' dia'+(e.days.length>1?'s':''));
+      if(e.createdBy) metaBits.push('criado por '+esc(e.createdBy)+(e.createdAt?' em '+fmtCreatedDate(e.createdAt):''));
+      html += '<div class="edition-card-meta">'+metaBits.join(' · ')+'</div>';
+      html += '</div>';
+      if(myRole==='editor' && !isActive){
+        html += '<button class="edition-card-mark" data-markactive="'+e.id+'">marcar como de hoje</button>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
   html += '<div class="section-title"><h2>Dias</h2><button class="small-btn" id="addDayBtn">+ Adicionar dia</button></div>';
   html += '<p class="hint" style="margin:-4px 4px 10px;">Toque num dia pra escolher qual editar embaixo.</p>';
   if(ed) ed.days.forEach(function(d){
@@ -1992,6 +2133,25 @@ function renderEdit(){
       html += '</div></div>';
     });
     html += '<p class="hint">O primeiro evento do dia (e qualquer evento marcado como 📌 fixo) define o horário de partida. Os demais horários são calculados automaticamente somando a duração de cada momento.</p>';
+  }
+
+  if(isSuperAdmin){
+    html += '<div class="section-title"><h2>Histórico de ações</h2><button class="small-btn" id="toggleActivityLogBtn">'+(activityLogOpen?'Esconder ▲':'Ver ▼')+'</button></div>';
+    if(activityLogOpen){
+      if(!activityLog.length){
+        html += '<p class="hint" style="margin:0 4px 10px;">Nenhuma ação registrada ainda.</p>';
+      } else {
+        html += '<div class="card" style="padding:6px 14px; max-height:320px; overflow-y:auto;">';
+        activityLog.slice().reverse().forEach(function(entry){
+          html += '<div class="prog-item" style="gap:10px;">';
+          html += '<div class="prog-time" style="width:56px;">'+fmtLogTime(entry.ts)+'</div>';
+          html += '<div class="prog-body"><div class="meta" style="font-size:12.5px; margin-top:0;"><b style="color:var(--text);">'+esc(entry.name)+'</b> — '+esc(entry.action)+'</div></div>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+      html += '<p class="hint" style="margin:6px 4px 0;">Visível só pra você, como administrador do sistema.</p>';
+    }
   }
 
   return html;
@@ -2060,12 +2220,13 @@ function bindEdit(){
           }
           showInlineForm('editionFormSlot', 'Nome da edição importada (ex: Encontro — 2027)', function(name){
             mutate(function(){
-              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days };
+              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days, createdBy: creatorName(), createdAt: Date.now() };
               editions.push(newEd);
               nav.editionId = newEd.id;
               nav.dayId = days[0].id;
               activeEditionId = newEd.id;
             });
+            logActivity('Importou planilha e criou o roteiro "'+name+'"');
           });
         }catch(err){
           document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui ler esse arquivo. Confira se é um .xlsx, .xls ou .csv válido.</div>';
@@ -2097,12 +2258,13 @@ function bindEdit(){
           }
           showInlineForm('editionFormSlot', 'Nome da edição importada (ex: Encontro — 2027)', function(name){
             mutate(function(){
-              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days };
+              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days, createdBy: creatorName(), createdAt: Date.now() };
               editions.push(newEd);
               nav.editionId = newEd.id;
               nav.dayId = days[0].id;
               activeEditionId = newEd.id;
             });
+            logActivity('Importou documento do Word e criou o roteiro "'+name+'"');
           });
         }).catch(function(){
           document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui ler esse arquivo. Confira se é um .docx válido.</div>';
@@ -2159,6 +2321,7 @@ function bindEdit(){
             nav.editionId = editions[0] && editions[0].id;
             nav.dayId = editions[0] && editions[0].days[0] && editions[0].days[0].id;
           });
+          logActivity('Restaurou um backup, substituindo todos os dados');
           document.getElementById('editionFormSlot').innerHTML = '';
         });
         document.getElementById('cancelRestoreBtn').addEventListener('click', function(){
@@ -2177,6 +2340,8 @@ function bindEdit(){
         clone.id = uid('ed');
         clone.name = name;
         clone.church = church;
+        clone.createdBy = creatorName();
+        clone.createdAt = Date.now();
         clone.days.forEach(function(d){
           d.id = uid('day');
           d.live = {activeEventId:null, startedAt:null, finished:false};
@@ -2187,6 +2352,7 @@ function bindEdit(){
         nav.dayId = clone.days[0] ? clone.days[0].id : null;
         activeEditionId = clone.id;
       });
+      logActivity('Duplicou o roteiro para criar "'+name+'"');
     });
   });
   var neu = document.getElementById('newEditionBtn');
@@ -2196,12 +2362,13 @@ function bindEdit(){
         var day0 = {id: uid('day'), label:'Dia 1', live:{activeEventId:null,startedAt:null,finished:false}, events:[
           {id: uid('ev'), anchorTime:'08:00', durMin:30, local:'Pátio', title:'Recepção', done:false, actualStartMs:null, skipped:false, responsavel:'', notes:''}
         ]};
-        var newEd = {id: uid('ed'), name:name, church:church, days:[day0]};
+        var newEd = {id: uid('ed'), name:name, church:church, days:[day0], createdBy: creatorName(), createdAt: Date.now()};
         editions.push(newEd);
         nav.editionId = newEd.id;
         nav.dayId = day0.id;
         activeEditionId = newEd.id;
       });
+      logActivity('Criou o novo roteiro "'+name+'"');
     });
   });
   var ren = document.getElementById('renameEditionBtn');
@@ -2228,6 +2395,7 @@ function bindEdit(){
         '<button class="btn btn-ghost" id="cancelDeleteEdBtn">Cancelar</button>'+
       '</div></div>';
     document.getElementById('confirmDeleteEdBtn').addEventListener('click', function(){
+      var deletedName = ed.name;
       mutate(function(){
         var wasActive = activeEditionId === ed.id;
         editions = editions.filter(function(e){ return e.id !== ed.id; });
@@ -2235,10 +2403,43 @@ function bindEdit(){
         nav.dayId = editions[0].days[0] && editions[0].days[0].id;
         if(wasActive){ activeEditionId = editions[0].id; }
       });
+      logActivity('Excluiu o roteiro "'+deletedName+'"');
       document.getElementById('editionFormSlot').innerHTML = '';
     });
     document.getElementById('cancelDeleteEdBtn').addEventListener('click', function(){
       document.getElementById('editionFormSlot').innerHTML = '';
+    });
+  });
+
+  var toggleLogBtn = document.getElementById('toggleActivityLogBtn');
+  if(toggleLogBtn) toggleLogBtn.addEventListener('click', function(){
+    activityLogOpen = !activityLogOpen;
+    render();
+  });
+  var toggleListBtn = document.getElementById('toggleEditionListBtn');
+  if(toggleListBtn) toggleListBtn.addEventListener('click', function(){
+    editionListOpen = !editionListOpen;
+    render();
+  });
+  document.querySelectorAll('.edition-card').forEach(function(card){
+    card.addEventListener('click', function(ev){
+      if(ev.target.closest('[data-markactive]')) return;
+      var eId = card.getAttribute('data-ed');
+      navigate(function(){
+        nav.editionId = eId;
+        var pickedEd = editions.find(function(x){return x.id===eId;});
+        nav.dayId = pickedEd && pickedEd.days[0] && pickedEd.days[0].id;
+      });
+    });
+  });
+  document.querySelectorAll('[data-markactive]').forEach(function(btn){
+    btn.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var eId = btn.getAttribute('data-markactive');
+      var pickedEd = editions.find(function(x){return x.id===eId;});
+      setActiveEdition(eId);
+      logActivity('Definiu "'+(pickedEd&&pickedEd.name)+'" como roteiro ativo do dia');
+      render();
     });
   });
 
