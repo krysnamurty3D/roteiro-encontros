@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Roteiro ECC — Editor</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
 :root{
   --bg:#14161c;
@@ -65,8 +65,8 @@ body{
 #roleBadge{position:absolute; right:16px; top:12px; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .corner-btn{background:var(--surface); border:1px solid var(--border); border-radius:100px; min-width:30px; height:30px; padding:0 10px; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--text-muted); text-transform:uppercase; font-weight:700;}
 .brand-center{text-align:center; min-width:0; padding:0 44px; box-sizing:border-box;}
-.brand-center h1{font-family:'Montserrat', sans-serif; font-weight:800; font-size:26px; margin:0; letter-spacing:0.3px; text-transform:uppercase;}
-.brand-sub{font-family:'Montserrat', sans-serif; font-style:italic; font-size:12.5px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:0.03em;}
+.brand-center h1{font-family:'Fraunces', serif; font-weight:800; font-size:26px; margin:0; letter-spacing:0.3px; text-transform:uppercase;}
+.brand-sub{font-family:'Fraunces', serif; font-style:italic; font-size:12.5px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:0.03em;}
 @keyframes flicker{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.7; transform:scale(0.85);}}
 
 .status-row{display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; padding:8px 16px 4px;}
@@ -140,7 +140,7 @@ main{padding-top:6px;}
 .status-banner.late .status-label{color:var(--danger);}
 .status-banner.early .status-label{color:var(--success);}
 .status-banner.ontime .status-label{color:var(--amber-glow);}
-.status-value{font-family:'Montserrat', sans-serif; font-weight:700; font-size:26px; margin-top:2px;}
+.status-value{font-family:'Fraunces', serif; font-weight:700; font-size:26px; margin-top:2px;}
 .status-banner.late .status-value{color:var(--danger);}
 .status-banner.early .status-value{color:var(--success);}
 .status-banner.ontime .status-value{color:var(--amber-glow);}
@@ -160,7 +160,7 @@ main{padding-top:6px;}
 .live-badge{display:flex; align-items:center; gap:7px; font-size:11px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:var(--amber);}
 .live-badge .dot{width:8px; height:8px; border-radius:50%; background:var(--amber); animation:flicker 1.6s ease-in-out infinite;}
 .live-loc{font-size:11px; font-weight:700; color:var(--text-muted);}
-.live-title{font-family:'Montserrat', sans-serif; font-weight:600; font-size:24px; line-height:1.25; margin:0 0 18px;}
+.live-title{font-family:'Fraunces', serif; font-weight:600; font-size:24px; line-height:1.25; margin:0 0 18px;}
 .timer-row{display:flex; align-items:center; gap:18px;}
 .ring-wrap{position:relative; width:96px; height:96px; flex:0 0 auto;}
 .ring-wrap svg{transform:rotate(-90deg);}
@@ -189,7 +189,7 @@ main{padding-top:6px;}
 .reset-confirm-text{font-size:12.5px; color:var(--text-muted); line-height:1.5;}
 .btn-full{width:100%;}
 .finished-box{margin:16px; padding:28px 20px; text-align:center; border-radius:var(--radius); background:var(--surface); border:1px solid var(--border);}
-.finished-box .big{font-family:'Montserrat', sans-serif; font-size:20px; margin:8px 0 4px;}
+.finished-box .big{font-family:'Fraunces', serif; font-size:20px; margin:8px 0 4px;}
 
 .mini-timeline{margin:20px 16px 12px;}
 .mini-timeline h3{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-faint); margin:0 0 10px 4px;}
@@ -234,7 +234,7 @@ main{padding-top:6px;}
 .prog-item{display:flex; gap:14px; padding:14px 4px; border-bottom:1px solid var(--border);}
 .prog-item:last-child{border-bottom:none;}
 .prog-time{font-family:'JetBrains Mono', monospace; font-weight:700; font-size:13.5px; color:var(--amber); width:48px; flex:0 0 auto; padding-top:2px;}
-.prog-body .title{font-family:'Montserrat', sans-serif; font-size:15.5px; font-weight:600; line-height:1.3;}
+.prog-body .title{font-family:'Fraunces', serif; font-size:15.5px; font-weight:600; line-height:1.3;}
 .prog-body .meta{font-size:11.5px; color:var(--text-muted); margin-top:4px; display:flex; gap:8px; align-items:center;}
 .prog-item.live-now{background:linear-gradient(90deg, rgba(232,163,61,0.1), transparent); border-radius:10px;}
 .prog-item.live-now .prog-time{color:var(--amber-glow);}
@@ -242,35 +242,26 @@ main{padding-top:6px;}
 
 /* EDIT TAB */
 .section-title{display:flex; justify-content:space-between; align-items:center; margin:18px 4px 10px;}
-.section-title h2{font-family:'Montserrat', sans-serif; font-size:16px; margin:0;}
+.section-title h2{font-family:'Fraunces', serif; font-size:16px; margin:0;}
 .small-btn{background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:12px; font-weight:700; padding:8px 12px; border-radius:100px; cursor:pointer;}
 .small-btn.danger{background:rgba(217,105,79,0.14); border-color:rgba(217,105,79,0.4); color:var(--danger);}
 .small-btn.amber{background:rgba(232,163,61,0.14); border-color:rgba(232,163,61,0.4); color:var(--amber-glow);}
-.role-legend-grid{display:flex; flex-direction:column; gap:10px; margin:4px 0 20px;}
-.role-legend-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;}
-.role-legend-badge{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:0.05em; padding:5px 12px; border-radius:100px; margin-bottom:8px;}
-.role-legend-badge.admin{background:rgba(232,163,61,0.16); color:var(--amber-glow);}
-.role-legend-badge.roteirista{background:rgba(111,174,138,0.16); color:var(--success);}
-.role-legend-badge.coord{background:var(--surface-3); color:var(--text-muted);}
-.role-legend-perms{font-size:12.5px; color:var(--text-muted); line-height:1.6; margin:0; padding-left:18px;}
-.admin-email-row{display:flex; align-items:center; gap:10px; padding:11px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px;}
-.admin-email-row .em{flex:1; font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.admin-email-row .meta{font-size:11px; color:var(--text-faint); margin-top:2px;}
-.admin-email-row.locked{opacity:0.65;}
-.admin-add-form{display:flex; gap:8px; margin:10px 0 4px;}
-.admin-add-form input{flex:1; background:var(--surface-2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:10px 12px; font-size:13.5px;}
-.admin-msg{font-size:12.5px; margin:6px 4px 0; padding:8px 10px; border-radius:8px;}
-.admin-msg.err{background:rgba(217,105,79,0.12); color:var(--danger);}
-.admin-msg.ok{background:rgba(111,174,138,0.12); color:var(--success);}
-.edition-list{margin:0 0 16px;}
-.edition-card{display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; cursor:pointer;}
-.edition-card.current{border-color:var(--amber);}
-.edition-card-body{flex:1; min-width:0;}
-.edition-card-title{font-family:'Montserrat', sans-serif; font-weight:600; font-size:15px; display:flex; align-items:center; gap:6px;}
-.edition-card-meta{font-size:11.5px; color:var(--text-muted); margin-top:3px; line-height:1.5;}
-.edition-star{color:var(--amber-glow); font-size:13px;}
-.edition-card-mark{background:none; border:none; color:var(--text-faint); font-size:11px; font-weight:700; text-decoration:underline; cursor:pointer; padding:4px; flex:0 0 auto; white-space:nowrap;}
 .day-edit-row{display:flex; align-items:center; gap:8px; padding:10px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; cursor:pointer;}
+.access-list{margin:0 4px;}
+.access-row{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:6px; font-size:13px;}
+.roteiro-list{margin:0 4px;}
+.roteiro-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px;}
+.roteiro-card.current{border-color:var(--amber); background:rgba(232,163,61,0.06);}
+.roteiro-card-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+.roteiro-card-name{font-family:'Fraunces', serif; font-weight:600; font-size:14.5px;}
+.roteiro-card-top .tag{font-size:9.5px; font-weight:800; text-transform:uppercase; color:var(--amber-glow); background:rgba(232,163,61,0.14); padding:2px 8px; border-radius:100px;}
+.roteiro-card-church{font-size:12px; color:var(--text-muted); margin-top:2px;}
+.roteiro-card-meta{font-size:11.5px; color:var(--text-faint); margin-top:4px;}
+.roteiro-card button{margin-top:8px;}
+.activity-list{margin:0 4px;}
+.activity-row{display:flex; align-items:flex-start; justify-content:space-between; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border); font-size:12.5px; line-height:1.4;}
+.activity-row:last-child{border-bottom:none;}
+.activity-time{font-family:'JetBrains Mono', monospace; color:var(--text-faint); font-size:11px; flex:0 0 auto;}
 .day-edit-row.selected{border-color:var(--amber); background:rgba(232,163,61,0.08);}
 .day-edit-row input{flex:1; background:transparent; border:none; color:var(--text); font-family:'Montserrat'; font-weight:600; font-size:13.5px; padding:4px;}
 .iconbtn{background:none; border:none; color:var(--text-faint); cursor:pointer; padding:6px; display:flex;}
@@ -293,7 +284,7 @@ main{padding-top:6px;}
   width:100%; background:var(--surface-2); border:1px solid var(--border); color:var(--text);
   border-radius:8px; padding:9px 10px; font-family:'Montserrat'; font-size:13.5px;
 }
-.event-fields input.title-input{font-family:'Montserrat', sans-serif; font-size:14.5px; font-weight:600;}
+.event-fields input.title-input{font-family:'Fraunces', serif; font-size:14.5px; font-weight:600;}
 .row2{display:flex; gap:8px;}
 .dur-box{display:flex; align-items:center; gap:6px; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:0 8px;}
 .dur-box input{width:44px; background:none; border:none; color:var(--text); font-family:'JetBrains Mono'; font-size:13px; padding:9px 0; text-align:right;}
@@ -311,8 +302,8 @@ main{padding-top:6px;}
   body *{visibility:hidden;}
   #printArea, #printArea *{visibility:visible;}
   #printArea{display:block !important; position:absolute; top:0; left:0; width:100%; padding:20px; color:#000; background:#fff;}
-  #printArea h1{font-family:'Montserrat', sans-serif; font-size:22px; margin:0 0 14px;}
-  #printArea h2{font-family:'Montserrat', sans-serif; font-size:16px; margin:22px 0 8px; border-bottom:2px solid #333; padding-bottom:4px;}
+  #printArea h1{font-family:'Fraunces', serif; font-size:22px; margin:0 0 14px;}
+  #printArea h2{font-family:'Fraunces', serif; font-size:16px; margin:22px 0 8px; border-bottom:2px solid #333; padding-bottom:4px;}
   #printArea table{width:100%; border-collapse:collapse; font-size:11px; margin-bottom:10px;}
   #printArea th, #printArea td{border:1px solid #999; padding:5px 7px; text-align:left;}
   #printArea th{background:#eee;}
@@ -322,11 +313,11 @@ main{padding-top:6px;}
 
 .role-picker{max-width:420px; margin:15vh auto 0; padding:0 24px; text-align:center;}
 .role-flame{font-size:40px; margin-bottom:6px;}
-.role-picker h1{font-family:'Montserrat', sans-serif; font-size:26px; margin:0 0 6px;}
+.role-picker h1{font-family:'Fraunces', serif; font-size:26px; margin:0 0 6px;}
 .role-picker p{color:var(--text-muted); font-size:14px; margin:0 0 28px;}
 .role-btn{display:block; width:100%; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px; margin-bottom:14px; cursor:pointer;}
 .role-btn:hover{border-color:var(--amber);}
-.role-btn-title{font-family:'Montserrat', sans-serif; font-weight:600; font-size:17px; color:var(--text);}
+.role-btn-title{font-family:'Fraunces', serif; font-weight:600; font-size:17px; color:var(--text);}
 .role-btn-sub{font-size:12.5px; color:var(--text-muted); margin-top:4px; line-height:1.4;}
 .role-pw-box{margin-top:8px; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:14px; text-align:left;}
 .role-pw-label{font-size:12px; color:var(--text-muted); margin-bottom:8px;}
@@ -385,10 +376,6 @@ main{padding-top:6px;}
     <button class="tab-btn" data-tab="edit" id="editTabBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Editar
-    </button>
-    <button class="tab-btn" data-tab="admin" id="adminTabBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 3.5v6c0 5-3.5 8.5-8 10.5-4.5-2-8-5.5-8-10.5v-6L12 2z"/></svg>
-      Painel
     </button>
   </div>
 </div>
@@ -471,12 +458,6 @@ function localSet(key, value){
 }
 
 function uid(p){return p+'-'+Math.random().toString(36).slice(2,9);}
-function creatorName(){ return (typeof currentUser!=='undefined' && currentUser && currentUser.name) || 'Roteirista'; }
-function fmtCreatedDate(ts){
-  if(!ts) return '';
-  var d = new Date(ts);
-  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
-}
 
 // Relógio de TESTE — só existe neste aparelho, nunca é salvo ou compartilhado.
 // Serve pra você simular "estamos começando às 20h" mesmo testando de tarde,
@@ -1127,6 +1108,21 @@ async function claimControllerIfFree(force){
 var nav = { editionId:null, dayId:null, tab:'live', theme:'dark' };
 
 var STORE_KEY = 'roteiro/data';
+var ACTIVITY_KEY = 'roteiro/activity_log';
+var ACTIVITY_MAX = 60;
+var activityLog = [];
+async function loadActivityLog(){
+  try{
+    var raw = await dbGetOnce(ACTIVITY_KEY);
+    activityLog = raw ? JSON.parse(raw) : [];
+  }catch(e){ activityLog = []; }
+}
+function logActivity(action){
+  var who = (currentUser && currentUser.name) || 'Alguém';
+  activityLog.unshift({ who: who, action: action, at: Date.now() });
+  if(activityLog.length > ACTIVITY_MAX) activityLog = activityLog.slice(0, ACTIVITY_MAX);
+  dbSet(ACTIVITY_KEY, JSON.stringify(activityLog));
+}
 var saveTimer = null;
 var lastSavedJSON = '';
 var syncStatus = { lastOkAt: null, failCount: 0 };
@@ -1148,32 +1144,6 @@ function setActiveEdition(id){
   persist();
 }
 
-// ---------- histórico de ações (visível só pro super admin) ----------
-// Guarda um registro simples de "quem fez o quê e quando" — útil se um dia
-// tiver dúvida sobre o que aconteceu durante o encontro. Fica guardado à
-// parte dos dados do roteiro, então não interfere na sincronização deles.
-var ACTIVITY_LOG_KEY = 'roteiro/activityLog';
-var activityLog = [];
-var ACTIVITY_LOG_MAX = 150;
-function logActivity(action){
-  if(myRole!=='editor') return;
-  var actorName = (currentUser && currentUser.name) || 'Roteirista';
-  var entry = { ts: Date.now(), name: actorName, action: action };
-  activityLog = activityLog.concat([entry]);
-  if(activityLog.length > ACTIVITY_LOG_MAX) activityLog = activityLog.slice(activityLog.length - ACTIVITY_LOG_MAX);
-  dbGetOnce(ACTIVITY_LOG_KEY).then(function(raw){
-    var arr = [];
-    try{ arr = raw ? JSON.parse(raw) : []; }catch(e){ arr = []; }
-    arr.push(entry);
-    if(arr.length > ACTIVITY_LOG_MAX) arr = arr.slice(arr.length - ACTIVITY_LOG_MAX);
-    dbSet(ACTIVITY_LOG_KEY, JSON.stringify(arr));
-  });
-}
-function fmtLogTime(ts){
-  var d = new Date(ts);
-  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');
-}
-
 function currentEdition(){ return editions.find(function(e){return e.id===nav.editionId;}) || editions[0]; }
 function currentDay(){
   var ed = currentEdition(); if(!ed) return null;
@@ -1192,44 +1162,28 @@ var currentUser = null; // {uid, name, email} depois do login com Google (só ro
 // Troque pelo SEU e-mail do Google. Quem entrar com esse e-mail vira "super
 // administrador": pode fazer tudo que um roteirista faz, e também coisas que
 // os outros roteiristas não podem (excluir roteiro de vez, restaurar backup
-// que apaga tudo, gerenciar quem mais pode ser roteirista). Dá pra colocar
-// mais de um e-mail, separado por vírgula. Esse é o único lugar que ainda
-// precisa ser editado direto no código — os demais roteiristas agora são
-// adicionados pela aba PAINEL, sem mexer em nada aqui.
-var SUPER_ADMIN_EMAILS = ['krysnamurty@gmail.com'];
+// que apaga tudo). Dá pra colocar mais de um e-mail, separado por vírgula.
+var SUPER_ADMIN_EMAILS = ['TROQUE_PARA_SEU_EMAIL@gmail.com'];
 var isSuperAdmin = false;
-
-// Lista de roteiristas autorizados — GERENCIADA PELA ABA PAINEL, guardada no
-// Firebase (compartilhada entre todos os aparelhos). Cada item é
-// {email, addedBy, addedAt}. Só quem estiver aqui (ou for super admin) consegue
-// entrar como roteirista.
-var AUTHORIZED_EDITORS_KEY = 'roteiro/authorizedEditors';
-var authorizedEditors = []; // carregado do Firebase em loadAuthorizedEditors()
-async function loadAuthorizedEditors(){
-  try{
-    var raw = await dbGetOnce(AUTHORIZED_EDITORS_KEY);
-    authorizedEditors = raw ? JSON.parse(raw) : [];
-  }catch(e){ authorizedEditors = []; }
-}
-function isEmailAuthorizedEditor(email){
-  var e = (email||'').toLowerCase();
+// Lista de quem mais pode ser roteirista, além do(s) super administrador(es)
+// acima. Fica guardada no Firebase (não precisa mexer no código pra adicionar
+// gente nova) — o super admin gerencia isso direto pela tela do app.
+var AUTHORIZED_KEY = 'roteiro/authorized_emails';
+var authorizedEmails = [];
+function isEmailAuthorized(email){
+  if(!email) return false;
+  var e = email.toLowerCase();
   if(SUPER_ADMIN_EMAILS.map(function(x){return x.toLowerCase();}).indexOf(e) !== -1) return true;
-  return authorizedEditors.some(function(item){ return (item.email||'').toLowerCase()===e; });
+  return authorizedEmails.map(function(x){return x.toLowerCase();}).indexOf(e) !== -1;
 }
-async function addAuthorizedEditor(email){
-  var clean = (email||'').trim();
-  if(!clean) return {ok:false, msg:'Digite um e-mail.'};
-  if(clean.toLowerCase().indexOf('@')===-1) return {ok:false, msg:'Isso não parece um e-mail válido.'};
-  if(isEmailAuthorizedEditor(clean)) return {ok:false, msg:'Esse e-mail já está autorizado.'};
-  authorizedEditors.push({ email: clean, addedBy: creatorName(), addedAt: Date.now() });
-  await dbSet(AUTHORIZED_EDITORS_KEY, JSON.stringify(authorizedEditors));
-  logActivity('Adicionou "'+clean+'" à lista de roteiristas autorizados');
-  return {ok:true};
+async function loadAuthorizedEmails(){
+  try{
+    var raw = await dbGetOnce(AUTHORIZED_KEY);
+    authorizedEmails = raw ? JSON.parse(raw) : [];
+  }catch(e){ authorizedEmails = []; }
 }
-async function removeAuthorizedEditor(email){
-  authorizedEditors = authorizedEditors.filter(function(item){ return (item.email||'').toLowerCase() !== (email||'').toLowerCase(); });
-  await dbSet(AUTHORIZED_EDITORS_KEY, JSON.stringify(authorizedEditors));
-  logActivity('Removeu "'+email+'" da lista de roteiristas autorizados');
+function saveAuthorizedEmails(){
+  dbSet(AUTHORIZED_KEY, JSON.stringify(authorizedEmails));
 }
 async function loadRole(){
   var val = localGet(ROLE_KEY);
@@ -1268,17 +1222,18 @@ function renderRolePicker(){
       errBox.style.display = 'none';
       try{
         var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result){
-          var loggedEmail = result.user.email || '';
-          if(!isEmailAuthorizedEditor(loggedEmail)){
-            errBox.textContent = 'Este e-mail ('+loggedEmail+') não está autorizado a ser roteirista. Peça pro administrador do sistema adicionar seu e-mail na lista de convidados.';
+        firebase.auth().signInWithPopup(provider).then(async function(result){
+          var email = result.user.email;
+          await loadAuthorizedEmails(); // recarrega a lista mais recente, caso tenha mudado
+          if(!isEmailAuthorized(email)){
+            errBox.innerHTML = 'O e-mail <b>'+esc(email)+'</b> ainda não foi autorizado a ser roteirista neste app. Peça pro administrador do sistema te adicionar.';
             errBox.style.display = 'block';
             firebase.auth().signOut();
             return;
           }
-          currentUser = { uid: result.user.uid, name: result.user.displayName || result.user.email, email: result.user.email };
+          currentUser = { uid: result.user.uid, name: result.user.displayName || result.user.email, email: email };
           mySessionId = currentUser.uid;
-          isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((currentUser.email||'').toLowerCase()) !== -1;
+          isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((email||'').toLowerCase()) !== -1;
           saveRole('editor');
           startApp();
         }).catch(function(err){
@@ -1326,24 +1281,12 @@ async function init(){
   var ok = await initFirebase();
   if(!ok){ renderSetupScreen('Não consegui conectar ao Firebase. Confira se os valores colados estão certos, se você tem internet, e se ativou o "Anonymous" em Authentication ▸ Sign-in method no Firebase Console.'); return; }
 
-  await loadAuthorizedEditors();
-  dbListen(AUTHORIZED_EDITORS_KEY, function(raw){
-    try{ authorizedEditors = raw ? JSON.parse(raw) : []; }catch(e){ authorizedEditors = []; }
-    if(nav && nav.tab==='admin') renderMain();
-  });
+  await loadAuthorizedEmails();
 
   // Se já tinha feito login com o Google antes, o Firebase lembra sozinho
   // entre recarregamentos de página — assim não precisa clicar de novo toda hora.
   var fbUser = firebase.auth().currentUser;
   if(fbUser && !fbUser.isAnonymous){
-    if(!isEmailAuthorizedEditor(fbUser.email||'')){
-      // O e-mail foi removido da lista de convidados (ou nunca esteve nela) —
-      // desconecta e manda de volta pra escolha de papel.
-      try{ firebase.auth().signOut(); }catch(e){}
-      myRole = null;
-      renderRolePicker();
-      return;
-    }
     currentUser = { uid: fbUser.uid, name: fbUser.displayName || fbUser.email, email: fbUser.email };
     mySessionId = currentUser.uid;
     isSuperAdmin = SUPER_ADMIN_EMAILS.map(function(e){return e.toLowerCase();}).indexOf((currentUser.email||'').toLowerCase()) !== -1;
@@ -1351,12 +1294,13 @@ async function init(){
 
   await loadRole();
   if(!myRole){ renderRolePicker(); return; }
-  if(myRole==='editor' && !currentUser){ renderRolePicker(); return; }
+  if(myRole==='editor' && (!currentUser || !isEmailAuthorized(currentUser.email))){ myRole=null; renderRolePicker(); return; }
   startApp();
 }
 
 async function startApp(){
   document.getElementById('app').innerHTML = document.getElementById('appShellTemplate').innerHTML;
+  if(myRole==='editor'){ await loadActivityLog(); }
 
   // Se um teste antigo ficou "ao vivo" sem ninguém reiniciar, a conta de
   // atraso/adiantamento fica toda errada, porque mistura o dia de hoje com
@@ -1459,40 +1403,23 @@ async function startApp(){
 
   if(myRole==='editor') activeIntervals.push(setInterval(function(){ if(nav.tab==='live') claimControllerIfFree().then(renderMain); }, 5000));
 
-  // Histórico de ações: só o super administrador acompanha em tempo real.
-  if(isSuperAdmin){
-    dbListen(ACTIVITY_LOG_KEY, function(raw){
-      try{ activityLog = raw ? JSON.parse(raw) : []; }catch(e){ activityLog = []; }
-      if(nav.tab==='edit') renderMain();
-    });
-  }
-
-  // Backup automático: a cada 1 hora, se você é roteirista, guardamos uma
-  // cópia extra de segurança dos dados lá no Firebase (além do botão manual
-  // de baixar backup que já existe). Guardamos só as últimas 5 cópias, pra
-  // não acumular espaço à toa.
+  // Backup automático a cada 30 minutos, só como rede de segurança extra —
+  // guarda uma cópia com carimbo de hora, mantendo só as 5 mais recentes.
   if(myRole==='editor'){
-    runAutoBackup();
-    activeIntervals.push(setInterval(runAutoBackup, 60*60*1000));
+    activeIntervals.push(setInterval(function(){
+      var stamp = new Date().toISOString().replace(/[:.]/g,'-');
+      dbSet('roteiro/auto_backups/'+stamp, JSON.stringify({editions: editions, activeEditionId: activeEditionId, at: Date.now()}));
+      dbGetOnce('roteiro/auto_backups').then(function(all){
+        if(!all || typeof all !== 'object') return;
+        var keys = Object.keys(all).sort();
+        if(keys.length > 5){
+          var kept = {};
+          keys.slice(keys.length-5).forEach(function(k){ kept[k] = all[k]; });
+          dbSet('roteiro/auto_backups', kept);
+        }
+      });
+    }, 30*60*1000));
   }
-}
-
-var AUTO_BACKUP_PREFIX = 'roteiro/autoBackups/';
-var AUTO_BACKUP_KEEP = 5;
-async function runAutoBackup(){
-  try{
-    var stamp = Date.now();
-    await dbSet(AUTO_BACKUP_PREFIX+stamp, JSON.stringify({editions: editions, activeEditionId: activeEditionId, savedAt: stamp}));
-    var idxRaw = await dbGetOnce(AUTO_BACKUP_PREFIX+'index');
-    var idx = [];
-    try{ idx = idxRaw ? JSON.parse(idxRaw) : []; }catch(e){ idx = []; }
-    idx.push(stamp);
-    while(idx.length > AUTO_BACKUP_KEEP){
-      var old = idx.shift();
-      dbSet(AUTO_BACKUP_PREFIX+old, null);
-    }
-    dbSet(AUTO_BACKUP_PREFIX+'index', JSON.stringify(idx));
-  }catch(e){}
 }
 
 function renderSyncStatusRow(){
@@ -1518,15 +1445,10 @@ function bindTabBar(){
     if(myRole==='coordenador'){ editBtn.style.display = 'none'; }
     else { editBtn.style.display = ''; }
   }
-  var adminBtn = document.getElementById('adminTabBtn');
-  if(adminBtn){
-    adminBtn.style.display = isSuperAdmin ? '' : 'none';
-  }
   document.querySelectorAll('.tab-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       var tab = btn.getAttribute('data-tab');
       if(tab==='edit' && myRole!=='editor') return;
-      if(tab==='admin' && !isSuperAdmin) return;
       navigate(function(){ nav.tab = tab; });
       if(tab==='live' && myRole==='editor') claimControllerIfFree().then(renderMain);
     });
@@ -1612,10 +1534,7 @@ function renderHeader(){
       nav.editionId = sel.value;
       nav.dayId = currentEdition().days[0] ? currentEdition().days[0].id : null;
     });
-    if(myRole==='editor'){
-      setActiveEdition(sel.value);
-      logActivity('Definiu "'+(currentEdition()&&currentEdition().name)+'" como roteiro ativo do dia');
-    }
+    if(myRole==='editor'){ setActiveEdition(sel.value); }
   };
 
   var pills = document.getElementById('dayPills');
@@ -1810,22 +1729,39 @@ function renderLiveEditor(){
 
     checkTimeAlerts(cur.id, remaining, overtime);
 
-    html += '<div class="live-hero'+(overtime?' overtime':'')+'">';
+    var next = schedule[idx+1];
+    var isLastEvent = !next;
+
+    html += '<div class="live-hero'+(overtime && !isLastEvent?' overtime':'')+'">';
     html += '<div class="live-top-row"><span class="live-badge"><span class="dot"></span>Ao vivo agora</span><span class="live-loc">'+esc(cur.local)+'</span></div>';
     html += '<div class="live-title">'+esc(cur.title)+'</div>';
     html += '<div class="time-line">'+previstoAtualLine(cur)+'</div>';
-    html += '<div class="timer-row">';
-    html += '<div class="ring-wrap"><svg width="96" height="96" viewBox="0 0 96 96"><circle class="ring-bg" cx="48" cy="48" r="'+R+'"/><circle class="ring-fg'+(overtime?' overtime':'')+'" cx="48" cy="48" r="'+R+'" stroke-dasharray="'+C+'" stroke-dashoffset="'+(overtime?0:offset)+'"/></svg></div>';
-    html += '<div><div class="timer-num'+(overtime?' overtime':'')+'">'+fmtClock(remaining)+'</div><div class="timer-label">'+(overtime?'tempo excedido':'restante · previsto '+cur.durMin+' min')+'</div></div>';
-    html += '</div></div>';
+    if(!isLastEvent){
+      html += '<div class="timer-row">';
+      html += '<div class="ring-wrap"><svg width="96" height="96" viewBox="0 0 96 96"><circle class="ring-bg" cx="48" cy="48" r="'+R+'"/><circle class="ring-fg'+(overtime?' overtime':'')+'" cx="48" cy="48" r="'+R+'" stroke-dasharray="'+C+'" stroke-dashoffset="'+(overtime?0:offset)+'"/></svg></div>';
+      html += '<div><div class="timer-num'+(overtime?' overtime':'')+'">'+fmtClock(remaining)+'</div><div class="timer-label">'+(overtime?'tempo excedido':'restante · previsto '+cur.durMin+' min')+'</div></div>';
+      html += '</div>';
+    }
+    html += '</div>';
 
-    var next = schedule[idx+1];
     if(next){
       html += '<div class="next-strip"><div style="flex:1;"><div class="lbl">A seguir</div><div class="ttl">'+esc(next.title)+'</div><div class="meta">'+esc(next.local)+' · '+next.durMin+' min</div><div class="time-line small">'+previstoAtualLine(next)+'</div></div></div>';
       html += renderTeamAlert(next);
-      if(!locked) html += '<div class="btnrow"><button class="btn btn-primary" id="advanceBtn">✓ Concluir e avançar</button></div>';
+      if(!locked){
+        if(advanceConfirmOpen){
+          html += '<div class="btnrow"><button class="btn btn-danger" id="advanceConfirmBtn">Sim, avançar</button><button class="btn btn-ghost" id="advanceCancelBtn">Cancelar</button></div>';
+        } else {
+          html += '<div class="btnrow"><button class="btn btn-primary" id="advanceBtn">✓ Concluir e avançar</button></div>';
+        }
+      }
     } else {
-      if(!locked) html += '<div class="btnrow"><button class="btn btn-primary" id="finishBtn">✓ Concluir encontro</button></div>';
+      if(!locked){
+        if(advanceConfirmOpen){
+          html += '<div class="btnrow"><button class="btn btn-danger" id="finishConfirmBtn">Sim, concluir</button><button class="btn btn-ghost" id="finishCancelBtn">Cancelar</button></div>';
+        } else {
+          html += '<div class="btnrow"><button class="btn btn-primary" id="finishBtn">✓ Concluir encontro</button></div>';
+        }
+      }
     }
     if(!locked && idx>0){
       html += '<div class="btnrow" style="margin-top:0;"><button class="btn btn-ghost btn-full" id="backBtn" style="flex:1;">‹ Voltar</button></div>';
@@ -1956,9 +1892,8 @@ function renderLiveCoordenador(){
   return html;
 }
 
-var editionListOpen = false;
-var activityLogOpen = false;
 var resetConfirmOpen = false;
+var advanceConfirmOpen = false;
 function renderResetControl(){
   if(!resetConfirmOpen){
     return '<div class="reset-row"><button class="reset-link" id="resetOpenBtn">↺ Reiniciar este dia</button></div>';
@@ -1984,22 +1919,40 @@ function bindLive(){
   var startBtn = document.getElementById('startDayBtn');
   if(startBtn) startBtn.addEventListener('click', function(){
     mutate(function(){ startEvent(day, schedule, schedule[0]); });
-    logActivity('Começou o dia "'+day.label+'" ('+schedule[0].title+')');
+    logActivity('Começou "'+day.label+'"');
   });
   var advBtn = document.getElementById('advanceBtn');
   if(advBtn) advBtn.addEventListener('click', function(){
-    var idx0 = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
-    var doneTitle = schedule[idx0].title, nextTitle = schedule[idx0+1] && schedule[idx0+1].title;
+    advanceConfirmOpen = true;
+    render();
+  });
+  var advConfirmBtn = document.getElementById('advanceConfirmBtn');
+  if(advConfirmBtn) advConfirmBtn.addEventListener('click', function(){
+    advanceConfirmOpen = false;
+    var idxNow = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
+    var fromTitle = schedule[idxNow] ? schedule[idxNow].title : '';
+    var toTitle = schedule[idxNow+1] ? schedule[idxNow+1].title : '';
     mutate(function(){
       var idx = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
       var orig = day.events.find(function(x){return x.id===schedule[idx].id;});
       orig.done = true;
       startEvent(day, schedule, schedule[idx+1]);
     });
-    logActivity('Concluiu "'+doneTitle+'" e avançou para "'+nextTitle+'"');
+    logActivity('Avançou de "'+fromTitle+'" para "'+toTitle+'"');
+  });
+  var advCancelBtn = document.getElementById('advanceCancelBtn');
+  if(advCancelBtn) advCancelBtn.addEventListener('click', function(){
+    advanceConfirmOpen = false;
+    render();
   });
   var finBtn = document.getElementById('finishBtn');
   if(finBtn) finBtn.addEventListener('click', function(){
+    advanceConfirmOpen = true;
+    render();
+  });
+  var finConfirmBtn = document.getElementById('finishConfirmBtn');
+  if(finConfirmBtn) finConfirmBtn.addEventListener('click', function(){
+    advanceConfirmOpen = false;
     mutate(function(){
       var idx = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
       var orig = day.events.find(function(x){return x.id===schedule[idx].id;});
@@ -2008,7 +1961,12 @@ function bindLive(){
       day.live.startedAt = null;
       day.live.finished = true;
     });
-    logActivity('Concluiu o encontro do dia "'+day.label+'"');
+    logActivity('Concluiu o encontro de "'+day.label+'"');
+  });
+  var finCancelBtn = document.getElementById('finishCancelBtn');
+  if(finCancelBtn) finCancelBtn.addEventListener('click', function(){
+    advanceConfirmOpen = false;
+    render();
   });
   var backBtn = document.getElementById('backBtn');
   if(backBtn) backBtn.addEventListener('click', function(){
@@ -2016,7 +1974,7 @@ function bindLive(){
       var idx = schedule.findIndex(function(e){return e.id===day.live.activeEventId;});
       jumpTo(day, schedule, Math.max(0, idx-1));
     });
-    logActivity('Voltou uma etapa no dia "'+day.label+'"');
+    logActivity('Voltou uma etapa em "'+day.label+'"');
   });
   var resetOpenBtn = document.getElementById('resetOpenBtn');
   if(resetOpenBtn) resetOpenBtn.addEventListener('click', function(){
@@ -2037,7 +1995,7 @@ function bindLive(){
       day.live.startedAt = null;
       day.live.finished = false;
     });
-    logActivity('Reiniciou o progresso do dia "'+day.label+'"');
+    logActivity('Reiniciou o progresso de "'+day.label+'"');
   });
   if(myRole==='editor'){
     document.querySelectorAll('.mini-start-btn').forEach(function(btn){
@@ -2045,14 +2003,12 @@ function bindLive(){
         ev.stopPropagation();
         var i = +btn.getAttribute('data-startidx');
         mutate(function(){ jumpTo(day, schedule, i); });
-        logActivity('Pulou direto para "'+schedule[i].title+'" no dia "'+day.label+'"');
       });
     });
     document.querySelectorAll('.mini-item[data-idx]').forEach(function(el){
       el.addEventListener('click', function(){
         var i = +el.getAttribute('data-idx');
         mutate(function(){ jumpTo(day, schedule, i); });
-        logActivity('Pulou direto para "'+schedule[i].title+'" no dia "'+day.label+'"');
       });
     });
   }
@@ -2124,27 +2080,47 @@ function renderEdit(){
   }
   html += '<div id="editionFormSlot"></div>';
 
-  html += '<div class="section-title"><h2>Roteiros ('+editions.length+')</h2><button class="small-btn" id="toggleEditionListBtn">'+(editionListOpen?'Esconder ▲':'Ver todos ▼')+'</button></div>';
-  if(editionListOpen){
-    html += '<div class="edition-list">';
-    editions.forEach(function(e){
-      var isCurrent = e.id===nav.editionId;
-      var isActive = e.id===activeEditionId;
-      html += '<div class="edition-card'+(isCurrent?' current':'')+'" data-ed="'+e.id+'">';
-      html += '<div class="edition-card-body">';
-      html += '<div class="edition-card-title">'+(isActive?'<span class="edition-star">★</span>':'')+esc(e.name)+'</div>';
-      var metaBits = [];
-      if(e.church) metaBits.push(esc(e.church));
-      metaBits.push(e.days.length+' dia'+(e.days.length>1?'s':''));
-      if(e.createdBy) metaBits.push('criado por '+esc(e.createdBy)+(e.createdAt?' em '+fmtCreatedDate(e.createdAt):''));
-      html += '<div class="edition-card-meta">'+metaBits.join(' · ')+'</div>';
-      html += '</div>';
-      if(myRole==='editor' && !isActive){
-        html += '<button class="edition-card-mark" data-markactive="'+e.id+'">marcar como de hoje</button>';
-      }
-      html += '</div>';
+  html += '<div class="section-title"><h2>Meus Roteiros</h2></div>';
+  html += '<div class="roteiro-list">';
+  editions.forEach(function(e){
+    var isActive = e.id === activeEditionId;
+    var isCurrent = e.id === nav.editionId;
+    html += '<div class="roteiro-card'+(isCurrent?' current':'')+'">';
+    html += '<div class="roteiro-card-top"><span class="roteiro-card-name">'+(isActive?'★ ':'')+esc(e.name)+'</span>'+(isCurrent?'<span class="tag">editando</span>':'')+'</div>';
+    if(e.church) html += '<div class="roteiro-card-church">'+esc(e.church)+'</div>';
+    var meta = e.days.length+' dia'+(e.days.length>1?'s':'');
+    if(isSuperAdmin && e.createdBy) meta += ' · criado por '+esc(e.createdBy);
+    html += '<div class="roteiro-card-meta">'+meta+'</div>';
+    if(!isCurrent) html += '<button class="small-btn amber" data-loadroteiro="'+e.id+'">Carregar</button>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  if(isSuperAdmin){
+    html += '<div class="section-title"><h2>Acesso de roteiristas</h2></div>';
+    html += '<p class="hint" style="margin:-4px 4px 10px;">Só e-mails do Google nessa lista (ou o seu, de administrador) conseguem entrar como roteirista.</p>';
+    html += '<div class="access-list">';
+    if(!authorizedEmails.length){
+      html += '<p class="hint" style="margin:4px;">Nenhum roteirista autorizado ainda além de você.</p>';
+    }
+    authorizedEmails.forEach(function(email, i){
+      html += '<div class="access-row"><span>'+esc(email)+'</span><button class="iconbtn" data-removeemail="'+i+'" title="Remover acesso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>';
     });
     html += '</div>';
+    html += '<div class="inline-form" style="margin:10px 4px;"><input type="email" id="newAuthEmailInput" placeholder="email@gmail.com"/><button class="small-btn amber" id="addAuthEmailBtn">+ Autorizar</button></div>';
+
+    html += '<div class="section-title"><h2>Histórico de atividades</h2></div>';
+    if(!activityLog.length){
+      html += '<p class="hint" style="margin:4px;">Nenhuma atividade registrada ainda.</p>';
+    } else {
+      html += '<div class="activity-list">';
+      activityLog.slice(0,20).forEach(function(entry){
+        var d = new Date(entry.at);
+        var timeStr = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+        html += '<div class="activity-row"><div><b>'+esc(entry.who)+'</b> '+esc(entry.action)+'</div><span class="activity-time">'+timeStr+'</span></div>';
+      });
+      html += '</div>';
+    }
   }
 
   html += '<div class="section-title"><h2>Dias</h2><button class="small-btn" id="addDayBtn">+ Adicionar dia</button></div>';
@@ -2188,116 +2164,7 @@ function renderEdit(){
     html += '<p class="hint">O primeiro evento do dia (e qualquer evento marcado como 📌 fixo) define o horário de partida. Os demais horários são calculados automaticamente somando a duração de cada momento.</p>';
   }
 
-  if(isSuperAdmin){
-    html += '<div class="section-title"><h2>Histórico de ações</h2><button class="small-btn" id="toggleActivityLogBtn">'+(activityLogOpen?'Esconder ▲':'Ver ▼')+'</button></div>';
-    if(activityLogOpen){
-      if(!activityLog.length){
-        html += '<p class="hint" style="margin:0 4px 10px;">Nenhuma ação registrada ainda.</p>';
-      } else {
-        html += '<div class="card" style="padding:6px 14px; max-height:320px; overflow-y:auto;">';
-        activityLog.slice().reverse().forEach(function(entry){
-          html += '<div class="prog-item" style="gap:10px;">';
-          html += '<div class="prog-time" style="width:56px;">'+fmtLogTime(entry.ts)+'</div>';
-          html += '<div class="prog-body"><div class="meta" style="font-size:12.5px; margin-top:0;"><b style="color:var(--text);">'+esc(entry.name)+'</b> — '+esc(entry.action)+'</div></div>';
-          html += '</div>';
-        });
-        html += '</div>';
-      }
-      html += '<p class="hint" style="margin:6px 4px 0;">Visível só pra você, como administrador do sistema.</p>';
-    }
-  }
-
   return html;
-}
-
-/* ---------- ADMIN TAB (só super admin) ---------- */
-var adminAddMsg = null; // {type:'ok'|'err', text} — feedback temporário do formulário de adicionar
-function renderAdmin(){
-  if(!isSuperAdmin) return '<div class="empty">Esta aba é restrita ao administrador do sistema.</div>';
-  var html = '';
-
-  html += '<div class="section-title" style="margin-top:6px;"><h2>Papéis e permissões</h2></div>';
-  html += '<div class="role-legend-grid">';
-  html += '<div class="role-legend-card">'+
-    '<span class="role-legend-badge admin">👑 ADMINISTRADOR</span>'+
-    '<ul class="role-legend-perms">'+
-      '<li>Tudo que o roteirista pode fazer</li>'+
-      '<li>Adicionar e remover roteiristas autorizados</li>'+
-      '<li>Excluir roteiros de vez</li>'+
-      '<li>Restaurar backup (substitui todos os dados)</li>'+
-      '<li>Ver o histórico de ações de todo mundo</li>'+
-    '</ul></div>';
-  html += '<div class="role-legend-card">'+
-    '<span class="role-legend-badge roteirista">🔑 ROTEIRISTA</span>'+
-    '<ul class="role-legend-perms">'+
-      '<li>Editar roteiros, dias e eventos</li>'+
-      '<li>Controlar o Ao Vivo (começar, avançar, voltar, pular etapas, reiniciar dia)</li>'+
-      '<li>Importar planilha ou Word, duplicar/criar roteiros</li>'+
-      '<li>Baixar backup manual</li>'+
-      '<li>Definir qual roteiro é "o de hoje"</li>'+
-    '</ul></div>';
-  html += '<div class="role-legend-card">'+
-    '<span class="role-legend-badge coord">COORDENADOR</span>'+
-    '<ul class="role-legend-perms">'+
-      '<li>Acompanhar o Ao Vivo em tempo real (somente visualização)</li>'+
-      '<li>Ver a Programação completa do dia</li>'+
-      '<li>Imprimir PDF de backup</li>'+
-    '</ul></div>';
-  html += '</div>';
-  html += '<p class="hint" style="margin:-10px 4px 20px;">As permissões de cada papel vão evoluindo aqui conforme formos adicionando novas funções ao app.</p>';
-
-  html += '<div class="section-title"><h2>Roteiristas autorizados</h2></div>';
-  html += '<p class="hint" style="margin:-4px 4px 10px;">Só quem estiver nesta lista (com essa conta Google) consegue entrar como roteirista.</p>';
-
-  SUPER_ADMIN_EMAILS.forEach(function(email){
-    html += '<div class="admin-email-row locked">'+
-      '<div><div class="em">'+esc(email)+'</div><div class="meta">Administrador · definido no código, não pode ser removido aqui</div></div>'+
-    '</div>';
-  });
-  authorizedEditors.forEach(function(item){
-    html += '<div class="admin-email-row" data-email="'+esc(item.email)+'">'+
-      '<div style="flex:1; min-width:0;"><div class="em">'+esc(item.email)+'</div><div class="meta">'+(item.addedBy?'adicionado por '+esc(item.addedBy):'')+(item.addedAt?' em '+fmtCreatedDate(item.addedAt):'')+'</div></div>'+
-      '<button class="iconbtn" data-act="removeEditor" title="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>'+
-    '</div>';
-  });
-  if(!authorizedEditors.length){
-    html += '<p class="hint" style="margin:4px;">Nenhum roteirista adicional autorizado ainda — adicione o e-mail Google de cada roteirista abaixo.</p>';
-  }
-  html += '<div class="admin-add-form"><input type="text" id="newEditorEmailInput" placeholder="e-mail@gmail.com"/><button class="small-btn amber" id="addEditorBtn">+ Adicionar</button></div>';
-  if(adminAddMsg){
-    html += '<div class="admin-msg '+(adminAddMsg.type==='ok'?'ok':'err')+'">'+esc(adminAddMsg.text)+'</div>';
-  }
-
-  html += '<div class="section-title"><h2>Mais funções</h2></div>';
-  html += '<p class="hint" style="margin:-4px 4px 4px;">Este espaço vai crescer com futuras funções sensíveis de administração do sistema.</p>';
-
-  return html;
-}
-
-function bindAdmin(){
-  if(!isSuperAdmin) return;
-  var addBtn = document.getElementById('addEditorBtn');
-  var input = document.getElementById('newEditorEmailInput');
-  if(addBtn && input){
-    var doAdd = function(){
-      addAuthorizedEditor(input.value).then(function(result){
-        adminAddMsg = result.ok ? {type:'ok', text:'E-mail adicionado com sucesso.'} : {type:'err', text: result.msg};
-        renderMain();
-      });
-    };
-    addBtn.addEventListener('click', doAdd);
-    input.addEventListener('keydown', function(e){ if(e.key==='Enter') doAdd(); });
-  }
-  document.querySelectorAll('[data-act=removeEditor]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var row = btn.closest('.admin-email-row');
-      var email = row.getAttribute('data-email');
-      removeAuthorizedEditor(email).then(function(){
-        adminAddMsg = {type:'ok', text:'"'+email+'" foi removido.'};
-        renderMain();
-      });
-    });
-  });
 }
 
 function showInlineForm(slotId, placeholder, onConfirm){
@@ -2363,13 +2230,12 @@ function bindEdit(){
           }
           showInlineForm('editionFormSlot', 'Nome da edição importada (ex: Encontro — 2027)', function(name){
             mutate(function(){
-              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days, createdBy: creatorName(), createdAt: Date.now() };
+              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days };
               editions.push(newEd);
               nav.editionId = newEd.id;
               nav.dayId = days[0].id;
               activeEditionId = newEd.id;
             });
-            logActivity('Importou planilha e criou o roteiro "'+name+'"');
           });
         }catch(err){
           document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui ler esse arquivo. Confira se é um .xlsx, .xls ou .csv válido.</div>';
@@ -2401,13 +2267,12 @@ function bindEdit(){
           }
           showInlineForm('editionFormSlot', 'Nome da edição importada (ex: Encontro — 2027)', function(name){
             mutate(function(){
-              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days, createdBy: creatorName(), createdAt: Date.now() };
+              var newEd = { id: uid('ed'), name: name, church: (ed && ed.church) || '', days: days };
               editions.push(newEd);
               nav.editionId = newEd.id;
               nav.dayId = days[0].id;
               activeEditionId = newEd.id;
             });
-            logActivity('Importou documento do Word e criou o roteiro "'+name+'"');
           });
         }).catch(function(){
           document.getElementById('editionFormSlot').innerHTML = '<div class="import-error">Não consegui ler esse arquivo. Confira se é um .docx válido.</div>';
@@ -2464,7 +2329,6 @@ function bindEdit(){
             nav.editionId = editions[0] && editions[0].id;
             nav.dayId = editions[0] && editions[0].days[0] && editions[0].days[0].id;
           });
-          logActivity('Restaurou um backup, substituindo todos os dados');
           document.getElementById('editionFormSlot').innerHTML = '';
         });
         document.getElementById('cancelRestoreBtn').addEventListener('click', function(){
@@ -2483,7 +2347,7 @@ function bindEdit(){
         clone.id = uid('ed');
         clone.name = name;
         clone.church = church;
-        clone.createdBy = creatorName();
+        clone.createdBy = currentUser ? currentUser.name : 'Alguém';
         clone.createdAt = Date.now();
         clone.days.forEach(function(d){
           d.id = uid('day');
@@ -2495,7 +2359,7 @@ function bindEdit(){
         nav.dayId = clone.days[0] ? clone.days[0].id : null;
         activeEditionId = clone.id;
       });
-      logActivity('Duplicou o roteiro para criar "'+name+'"');
+      logActivity('Duplicou o roteiro "'+ed.name+'" como "'+name+'"');
     });
   });
   var neu = document.getElementById('newEditionBtn');
@@ -2505,22 +2369,24 @@ function bindEdit(){
         var day0 = {id: uid('day'), label:'Dia 1', live:{activeEventId:null,startedAt:null,finished:false}, events:[
           {id: uid('ev'), anchorTime:'08:00', durMin:30, local:'Pátio', title:'Recepção', done:false, actualStartMs:null, skipped:false, responsavel:'', notes:''}
         ]};
-        var newEd = {id: uid('ed'), name:name, church:church, days:[day0], createdBy: creatorName(), createdAt: Date.now()};
+        var newEd = {id: uid('ed'), name:name, church:church, createdBy: currentUser ? currentUser.name : 'Alguém', createdAt: Date.now(), days:[day0]};
         editions.push(newEd);
         nav.editionId = newEd.id;
         nav.dayId = day0.id;
         activeEditionId = newEd.id;
       });
-      logActivity('Criou o novo roteiro "'+name+'"');
+      logActivity('Criou o roteiro "'+name+'"');
     });
   });
   var ren = document.getElementById('renameEditionBtn');
   if(ren) ren.addEventListener('click', function(){
     showRoteiroForm('editionFormSlot', {name: ed.name, church: ed.church||''}, function(name, church){
+      var oldName = ed.name;
       mutate(function(){
         ed.name = name;
         ed.church = church;
       });
+      logActivity('Renomeou o roteiro "'+oldName+'" para "'+name+'"');
     });
   });
   var delEd = document.getElementById('deleteEditionBtn');
@@ -2554,34 +2420,33 @@ function bindEdit(){
     });
   });
 
-  var toggleLogBtn = document.getElementById('toggleActivityLogBtn');
-  if(toggleLogBtn) toggleLogBtn.addEventListener('click', function(){
-    activityLogOpen = !activityLogOpen;
-    render();
-  });
-  var toggleListBtn = document.getElementById('toggleEditionListBtn');
-  if(toggleListBtn) toggleListBtn.addEventListener('click', function(){
-    editionListOpen = !editionListOpen;
-    render();
-  });
-  document.querySelectorAll('.edition-card').forEach(function(card){
-    card.addEventListener('click', function(ev){
-      if(ev.target.closest('[data-markactive]')) return;
-      var eId = card.getAttribute('data-ed');
+  document.querySelectorAll('[data-loadroteiro]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.getAttribute('data-loadroteiro');
       navigate(function(){
-        nav.editionId = eId;
-        var pickedEd = editions.find(function(x){return x.id===eId;});
-        nav.dayId = pickedEd && pickedEd.days[0] && pickedEd.days[0].id;
+        nav.editionId = id;
+        nav.dayId = currentEdition().days[0] ? currentEdition().days[0].id : null;
       });
+      if(myRole==='editor'){ setActiveEdition(id); }
     });
   });
-  document.querySelectorAll('[data-markactive]').forEach(function(btn){
-    btn.addEventListener('click', function(ev){
-      ev.stopPropagation();
-      var eId = btn.getAttribute('data-markactive');
-      var pickedEd = editions.find(function(x){return x.id===eId;});
-      setActiveEdition(eId);
-      logActivity('Definiu "'+(pickedEd&&pickedEd.name)+'" como roteiro ativo do dia');
+
+  var addAuthBtn = document.getElementById('addAuthEmailBtn');
+  if(addAuthBtn) addAuthBtn.addEventListener('click', function(){
+    var input = document.getElementById('newAuthEmailInput');
+    var email = input.value.trim().toLowerCase();
+    if(!email || email.indexOf('@')===-1) return;
+    if(authorizedEmails.map(function(x){return x.toLowerCase();}).indexOf(email)===-1){
+      authorizedEmails.push(email);
+      saveAuthorizedEmails();
+      render();
+    }
+  });
+  document.querySelectorAll('[data-removeemail]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var i = +btn.getAttribute('data-removeemail');
+      authorizedEmails.splice(i,1);
+      saveAuthorizedEmails();
       render();
     });
   });
@@ -2694,13 +2559,11 @@ function buildPrintable(ed){
 
 function renderMain(){
   var main = document.getElementById('mainArea');
-  if(!isSuperAdmin && nav.tab==='admin'){ nav.tab='live'; }
   if(nav.tab==='live'){
     main.innerHTML = renderLive();
     bindLive();
   }
   else if(nav.tab==='program'){ main.innerHTML = renderProgram(); bindProgram(); }
-  else if(nav.tab==='admin'){ main.innerHTML = renderAdmin(); bindAdmin(); }
   else { main.innerHTML = renderEdit(); bindEdit(); }
 }
 
