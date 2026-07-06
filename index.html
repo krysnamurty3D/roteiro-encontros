@@ -1172,9 +1172,9 @@ var AUTHORIZED_KEY = 'roteiro/authorized_emails';
 var authorizedEmails = [];
 function isEmailAuthorized(email){
   if(!email) return false;
-  var e = email.toLowerCase();
-  if(SUPER_ADMIN_EMAILS.map(function(x){return x.toLowerCase();}).indexOf(e) !== -1) return true;
-  return authorizedEmails.map(function(x){return x.toLowerCase();}).indexOf(e) !== -1;
+  var e = email.trim().toLowerCase();
+  if(SUPER_ADMIN_EMAILS.map(function(x){return x.trim().toLowerCase();}).indexOf(e) !== -1) return true;
+  return authorizedEmails.map(function(x){return x.trim().toLowerCase();}).indexOf(e) !== -1;
 }
 async function loadAuthorizedEmails(){
   try{
