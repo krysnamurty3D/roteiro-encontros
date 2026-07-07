@@ -411,16 +411,27 @@ function initFirebase(){
       if(!firebaseIsConfigured() || typeof firebase === 'undefined'){ resolve(false); return; }
       firebase.initializeApp(firebaseConfig);
       fbDb = firebase.database();
-      // Faz um login anônimo e silencioso — a pessoa não vê nada disso,
-      // mas é o que permite deixar as regras do Firebase mais seguras
-      // (exigindo "estar logado" pra ler/gravar) sem pedir senha do Google
-      // nem nada complicado pra ninguém.
-      firebase.auth().signInAnonymously().then(function(){
-        FIREBASE_READY = true;
-        resolve(true);
-      }).catch(function(){
-        FIREBASE_READY = false;
-        resolve(false);
+      // Espera o Firebase confirmar se JÁ existe uma sessão (do Google ou
+      // anônima) guardada desse navegador antes de decidir se precisa criar
+      // uma sessão anônima nova. Sem isso, um roteirista que já tinha feito
+      // login com o Google perderia essa sessão toda vez que a página
+      // recarregasse, porque um login anônimo "por cima" apaga o anterior.
+      var resolved = false;
+      firebase.auth().onAuthStateChanged(function(user){
+        if(resolved) return;
+        resolved = true;
+        if(user){
+          FIREBASE_READY = true;
+          resolve(true);
+        } else {
+          firebase.auth().signInAnonymously().then(function(){
+            FIREBASE_READY = true;
+            resolve(true);
+          }).catch(function(){
+            FIREBASE_READY = false;
+            resolve(false);
+          });
+        }
       });
     }catch(e){
       FIREBASE_READY = false;
