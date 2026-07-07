@@ -63,6 +63,7 @@ body{
 .brand-header{position:relative; padding:12px 16px 4px; min-height:34px;}
 #themeToggleBtn{position:absolute; left:16px; top:8px;}
 #roleBadge{position:absolute; right:16px; top:12px; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+#roleBadge.confirming{max-width:none; overflow:visible; white-space:normal; z-index:25; text-align:right;}
 .corner-btn{background:var(--surface); border:1px solid var(--border); border-radius:100px; min-width:30px; height:30px; padding:0 10px; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--text-muted); text-transform:uppercase; font-weight:700;}
 .brand-center{text-align:center; min-width:0; padding:0 44px; box-sizing:border-box;}
 .brand-center h1{font-family:'Fraunces', serif; font-weight:800; font-size:26px; margin:0; letter-spacing:0.3px; text-transform:uppercase;}
@@ -1481,11 +1482,13 @@ function renderRoleBadgeContent(roleBadge, isEditor){
   var label = isEditor ? (isSuperAdmin ? '👑 ADMIN' : 'ROTEIRISTA') : 'COORDENADOR';
   if(isEditor && currentUser && currentUser.name){ label += ' · '+currentUser.name.split(' ')[0].toUpperCase(); }
   roleBadge.innerHTML = label;
+  roleBadge.classList.remove('confirming');
   roleBadge.style.background = isEditor ? 'rgba(232,163,61,0.14)' : 'var(--surface-2)';
   roleBadge.style.color = isEditor ? 'var(--amber-glow)' : 'var(--text-muted)';
 }
 function showRoleSwitchConfirm(roleBadge, isEditor){
   roleBadge.onclick = null;
+  roleBadge.classList.add('confirming');
   roleBadge.innerHTML =
     (isEditor ? 'Sair da conta? ' : 'Trocar de papel? ')+
     '<button class="role-switch-yes" id="roleSwitchYes">Sim</button> '+
@@ -2574,6 +2577,7 @@ function buildPrintable(ed){
 
 function renderMain(){
   var main = document.getElementById('mainArea');
+  if(!main) return; // tela já foi trocada (ex: acabou de sair/trocar de papel)
   if(nav.tab==='live'){
     main.innerHTML = renderLive();
     bindLive();
@@ -2583,6 +2587,7 @@ function renderMain(){
 }
 
 function render(){
+  if(!document.getElementById('mainArea')) return; // tela já foi trocada (ex: acabou de sair/trocar de papel)
   renderHeader();
   renderMain();
 }
