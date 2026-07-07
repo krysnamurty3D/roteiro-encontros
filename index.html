@@ -2070,6 +2070,7 @@ function renderEdit(){
   var day = currentDay();
   var html = '';
 
+  html += '<div class="hint" style="background:var(--surface); padding:8px 12px; border-radius:8px; margin:0 4px 10px; font-family:monospace;">🔍 Diagnóstico: logado como <b>'+esc((currentUser&&currentUser.email)||'(nenhum)')+'</b> · isSuperAdmin = <b>'+isSuperAdmin+'</b></div>';
   html += '<div class="edition-actions">';
   html += '<button class="small-btn amber" id="dupEditionBtn">⎘ Duplicar roteiro</button>';
   html += '<button class="small-btn" id="newEditionBtn">+ Novo roteiro</button>';
